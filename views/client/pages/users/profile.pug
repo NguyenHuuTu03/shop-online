@@ -1,0 +1,116 @@
+extends ../../layouts/default.pug
+
+block main
+  .profile-page.py-5
+    .container
+
+      .row.g-4
+
+        // ===== SIDEBAR =====
+        .col-lg-3
+
+          .profile-sidebar.shadow-sm
+
+            .profile-user.text-center
+              img.profile-avatar(
+                src=user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIFYgpCPMtvHYo7rQ8fFSEgLa1BO78b_9hHA&s"
+                alt="avatar"
+              )
+
+              h5.mt-3.mb-1 #{user.fullName}
+
+              p.text-muted.mb-0 #{user.email}
+
+            ul.profile-menu
+              li
+                a.active(href="/users/profile")
+                  i.fa.fa-user
+                  span Thông tin cá nhân
+
+              li
+                a(href="/users/orders")
+                  i.fa.fa-shopping-bag
+                  span Đơn hàng đã đặt
+
+              li
+                a(href="/users/logout")
+                  i.fa.fa-sign-out
+                  span Đăng xuất
+
+        // ===== CONTENT =====
+        .col-lg-9
+
+          .profile-content.shadow-sm
+
+            h3.profile-title
+              i.fa.fa-user-circle.me-2
+              | #{pageTitle}
+
+            form.profile-form(
+              method="POST"
+              action="/users/profile"
+              enctype="multipart/form-data"
+            )
+
+              .row.g-4
+
+                // ===== FULL NAME =====
+                .col-md-6
+                  label.form-label Họ tên
+                  input.form-control(
+                    type="text"
+                    name="fullName"
+                    value=user.fullName
+                    placeholder="Nhập họ tên"
+                  )
+
+                // ===== EMAIL =====
+                .col-md-6
+                  label.form-label Email
+                  input.form-control(
+                    type="email"
+                    name="email"
+                    value=user.email
+                    placeholder="Nhập email"
+                  )
+
+                // ===== PHONE =====
+                .col-md-6
+                  label.form-label Số điện thoại
+                  input.form-control(
+                    type="text"
+                    name="phone"
+                    value=user.phone
+                    placeholder="Nhập số điện thoại"
+                  )
+
+                // ===== ADDRESS =====
+                .col-md-6
+                  label.form-label Địa chỉ
+                  input.form-control(
+                    type="text"
+                    name="address"
+                    value=user.address
+                    placeholder="Nhập địa chỉ"
+                  )
+
+                // ===== AVATAR =====
+                .col-12
+                  label.form-label Avatar
+                  input.form-control(
+                    type="file"
+                    name="avatar"
+                    accept="image/*"
+                  )
+                // Preview ảnh
+                .avatar-preview-wrapper.mt-3
+                  img#avatarPreview.avatar-preview(
+                    src=user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIFYgpCPMtvHYo7rQ8fFSEgLa1BO78b_9hHA&s"
+                    alt="preview"
+                  )
+
+                // ===== BUTTON =====
+                .col-12
+                  button.btn.btn-primary.btn-save(type="submit")
+                    i.fa.fa-save.me-2
+                    | Cập nhật thông tin

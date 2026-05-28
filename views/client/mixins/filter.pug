@@ -1,0 +1,81 @@
+mixin filter(type, slugCategory="",brands, query, keyword="")
+
+  form.filter-card(method="GET" action=`/${type}/${slugCategory}` form-filter)
+    if keyword
+      input(type="hidden" name="keyword" value=keyword)
+    .card
+
+      .card-header
+        strong Bộ lọc sản phẩm
+
+      .card-body
+
+        // ================= BRAND =================
+        .filter-group
+          h6 Thương hiệu
+
+          each brand in brands
+            .form-check
+              input.form-check-input(
+                type="checkbox"
+                name="brand"
+                value=brand._id
+                id=`brand-${brand._id}`
+                checked=(query.brand && (
+                  Array.isArray(query.brand)
+                    ? query.brand.includes(brand.id)
+                    : query.brand == brand.id
+                  )
+                )
+              )
+              label.form-check-label(for=`brand-${brand._id}`)
+                | #{brand.title}
+
+        hr
+
+        // ================= SEGMENT =================
+        .filter-group
+          h6 Phân khúc
+
+          .form-check
+            input.form-check-input(type="radio" id="flagship" name="segment" value="flagship" checked=(query.segment == "flagship"))
+            label.form-check-label(for="flagship") Flagship
+
+          .form-check
+            input.form-check-input(type="radio" id="mid" name="segment" value="mid" checked=(query.segment == "mid"))
+            label.form-check-label(for="mid") Tầm trung
+
+          .form-check
+            input.form-check-input(type="radio" id="budget" name="segment" value="budget" checked=(query.segment == "budget"))
+            label.form-check-label(for="budget") Giá rẻ
+
+        hr
+
+        // ================= PRICE =================
+        .filter-group
+          h6 Khoảng giá
+
+          .form-check
+            input.form-check-input(type="radio" id="under5" name="price" value="under5" checked=(query.price == "under5"))
+            label.form-check-label(for="under5") Dưới 5 triệu
+
+          .form-check
+            input.form-check-input(type="radio" id="5to10" name="price" value="5to10" checked=(query.price == "5to10"))
+            label.form-check-label(for="5to10") 5 - 10 triệu
+
+          .form-check
+            input.form-check-input(type="radio" id="10to20" name="price" value="10to20" checked=(query.price == "10to20"))
+            label.form-check-label(for="10to20") 10 - 20 triệu
+
+          .form-check
+            input.form-check-input(type="radio" id="above20" name="price" value="above20" checked=(query.price == "above20"))
+            label.form-check-label(for="above20") Trên 20 triệu
+
+        hr
+
+        // ================= BUTTON =================
+        .filter-actions.mt-3
+
+          button.btn.btn-dark.btn-sm.w-100(type="submit")
+            i.fa-solid.fa-filter.me-2
+            | Lọc sản phẩm

@@ -1,0 +1,30 @@
+doctype 
+html 
+  head 
+    title #{pageTitle}
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css")
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css")
+    link(rel="stylesheet", href="/client/css/style.css")
+    link(rel="stylesheet", href="/client/css/products.css")
+    link(rel="stylesheet", href="/client/css/user.css")
+    link(rel="stylesheet", href="/client/css/cart.css")
+    
+
+  body 
+    include ../partials/header.pug
+    
+    .main 
+      block main 
+    include ../partials/footer.pug
+
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js") 
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js") 
+    script(src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js") 
+
+    script(src="/client/js/script.js") 
+    block scripts
+    
+    
+       
+

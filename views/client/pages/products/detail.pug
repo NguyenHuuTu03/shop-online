@@ -1,0 +1,132 @@
+extends ../../layouts/default.pug
+
+block main
+  .product-detail
+    .container.py-4
+
+      .row.g-4
+
+        // ================= LEFT =================
+        .col-lg-5
+
+          .product-detail__left
+
+            // SWIPER ẢNH CHÍNH
+            .swiper.mySwiper2
+              .swiper-wrapper
+                each image in product.images
+                  .swiper-slide
+                    .product-detail__image
+                      img(
+                        src=image
+                        alt="iPhone 16 Pro Max"
+                      )
+
+              .swiper-button-next
+              .swiper-button-prev
+
+            // SWIPER THUMBNAIL
+            .swiper.mySwiper
+              .swiper-wrapper
+                each image in product.images
+                  .swiper-slide
+                    img.gallery-thumb(
+                      src=image
+                    )
+
+                
+
+        // ================= RIGHT =================
+        .col-lg-7
+
+          .product-detail__right
+
+            h1.product-detail__title #{product.title}
+
+            .product-detail__metas
+              span.meta-label Thương hiệu:
+              a.meta-value(href="#") #{product.brand.title}
+              span.meta-divider •
+              span.meta-label Danh mục:
+              a.meta-value(href=`/products/${product.category.slug}`) #{product.category.title}
+
+            // PRICE
+            .product-price-card
+              .price-row
+                span.price-new #{product.priceNew.toLocaleString()}đ
+                span.discount-badge -#{product.discount}%
+              span.price-old #{product.price.toLocaleString()}đ
+
+            // VARIANTS
+            if(product.variants.length > 0)
+              .product-detail__variants
+                p.variants-label Phiên bản
+                .variants-list
+                  each item in product.variants
+                    .variant-item.active
+                      strong Bộ nhớ: #{item.storage}
+                      span Màu sắc: #{item.color}
+                      span.vp Giá tiền: #{item.price.toLocaleString()}đ
+
+
+            // QUANTITY
+            form(form-cart)
+              .product-detail__quantity.mb-3
+                p.variants-label Số lượng
+                .quantity-wrap
+                  button.qty-btn(type="button" btn-down) -
+                  input.qty-input(type="number" value="1" min="1"  readonly)  
+                  button.qty-btn(type="button" btn-up) +
+
+              // ACTIONS
+              .product-detail__actions
+                button.btn-cart(btn-form-cart=product.id)
+                  i.fa-solid.fa-cart-shopping.me-2
+                  | Thêm vào giỏ
+
+                button.btn-buy(product-id=product.id)
+                  i.fa-solid.fa-bolt.me-2
+                  | Mua ngay
+
+      // ================= DESCRIPTION =================
+      .product-section.mt-5
+
+        h3.section-title Mô tả sản phẩm
+
+        .product-description__content
+          p #{product.description}
+
+      // ================= SPECIFICATIONS =================
+      .product-section.mt-4
+
+        h3.section-title Thông số kỹ thuật
+
+        table.spec-table
+          tbody
+            tr
+              td.spec-label Màn hình
+              td #{product.specifications.screen}
+            tr
+              td.spec-label CPU
+              td #{product.specifications.cpu}
+            tr
+              td.spec-label RAM
+              td #{product.specifications.ram}
+            tr
+              td.spec-label Bộ nhớ
+              td #{product.specifications.storage}
+            tr
+              td.spec-label GPU
+              td #{product.specifications.gpu}
+            tr
+              td.spec-label Pin
+              td #{product.specifications.battery}
+            tr
+              td.spec-label Camera
+              td #{product.specifications.camera}
+            tr
+              td.spec-label Hệ điều hành
+              td #{product.specifications.os}
+            tr
+              td.spec-label Trọng lượng
+              td #{product.specifications.weight}

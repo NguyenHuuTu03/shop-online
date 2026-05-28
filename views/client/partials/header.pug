@@ -1,0 +1,47 @@
+header.header
+  .container
+    .header__top
+
+      .header__logo
+        a(href="/")
+          img(
+            src="/client/images/logo.png"
+            alt="Logo"
+          )
+
+      // ===== SEARCH =====
+      .header__search.box-search
+        form(action=`/search/result` method="GET")
+          input(
+            type="text"
+            name="keyword"
+            placeholder="Tìm kiếm sản phẩm..."
+            autocomplete="off"
+          )
+          button(type="submit")
+            i.fa.fa-search
+
+        // ===== SUGGEST BOX =====
+        .search-suggest
+          .suggest-list
+            
+
+      // ===== ACTIONS =====
+      .header__actions
+        a.header__cart(href="/cart")
+          i.fa.fa-shopping-cart
+          span Giỏ hàng
+          span.mini-cart-count(data-mini-cart) 0
+        if user
+          a.header__login(href="/users/profile")
+            i.fa.fa-user
+            span #{user.fullName}
+
+          a.header__login.ms-3(href="/users/logout")
+            i.fa.fa-sign-out
+            span Đăng xuất
+
+        else
+          a.header__login(href="/users/login")
+            i.fa.fa-user
+            span Đăng nhập

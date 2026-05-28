@@ -1,0 +1,54 @@
+extends ../../layouts/default.pug
+
+block main
+  .cart-page
+    .cart-page__header
+      h2.cart-page__title Giỏ hàng
+
+    .cart-page__layout
+
+      //- ── LEFT: product table ──────────────────────────
+      .cart-page__products
+
+        table.cart-table
+          thead.cart-table__head
+            tr.cart-table__head-row
+              th.cart-table__th.cart-table__th--image    Ảnh
+              th.cart-table__th.cart-table__th--name     Tên sản phẩm
+              th.cart-table__th.cart-table__th--price    Đơn giá
+              th.cart-table__th.cart-table__th--qty      Số lượng
+              th.cart-table__th.cart-table__th--subtotal Thành tiền
+              th.cart-table__th.cart-table__th--action   Thao tác
+
+          tbody.cart-table__body
+
+           
+
+      //- ── RIGHT: order summary ─────────────────────────
+      .cart-page__sidebar
+
+        .order-summary
+          .order-summary__header
+            h3.order-summary__title Tóm tắt đơn hàng
+
+          .order-summary__body
+
+            .order-summary__row
+              span.order-summary__label Tạm tính
+              span.order-summary__value(total-cart) #{cart.totalPrice.toLocaleString()} đ
+
+            .order-summary__row
+              span.order-summary__label Phí vận chuyển
+              span.order-summary__value.order-summary__value--free Miễn phí
+
+          .order-summary__footer
+
+            .order-summary__total-row
+              span.order-summary__total-label Tổng tiền
+              span.order-summary__total-amount(total-cart) #{cart.totalPrice.toLocaleString()} đ
+
+            button.checkout-btn(type="button")
+              span.checkout-btn__text Thanh toán
+
+block scripts
+  script(src="/client/js/cart.js")
