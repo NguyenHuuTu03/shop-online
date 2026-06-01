@@ -88,8 +88,6 @@ module.exports.paymentMomo = async (req, res) => {
   };
   //Send the request and get the response
   const momoReq = https.request(options, (momoRes) => {
-    console.log(`Status: ${momoRes.statusCode}`);
-
     let data = "";
 
     momoRes.on("data", (chunk) => {
@@ -107,8 +105,6 @@ module.exports.paymentMomo = async (req, res) => {
   });
 
   momoReq.on("error", (e) => {
-    console.log(`problem with request: ${e.message}`);
-
     return res.json({
       code: 500,
       message: e.message,
@@ -123,6 +119,15 @@ module.exports.paymentMomo = async (req, res) => {
 module.exports.momoReturn = async (req, res) => {
   const { resultCode, orderInfo } = req.query;
   const orderId = orderInfo.split(" ")[4];
+  const order = await Order.findOne({
+    _id: orderId,
+  });
+  const user = await User.findOne({
+    _id: order.userId,
+  }).select("-password");
+  const cart = await Cart.findOne({
+    userId: user.id,
+  });
 
   if (resultCode == "0") {
     await Order.updateOne(
@@ -160,10 +165,10 @@ module.exports.paymentVNPay = async (req, res) => {
     hashAlgorithm: "SHA512",
     enableLog: true,
   });
-  const { orderId, amount } = req.body;
+  const { orderId, totalPrice } = req.body;
 
   const paymentUrl = vnpay.buildPaymentUrl({
-    vnp_Amount: Number(amount),
+    vnp_Amount: Number(totalPrice),
     vnp_IpAddr: req.ip || "127.0.0.1",
     vnp_ReturnUrl: `https://arise-perfume-bucked.ngrok-free.dev/payment/vnpay-return`,
     vnp_TxnRef: orderId,
@@ -186,20 +191,32 @@ module.exports.vnpayReturn = async (req, res) => {
   const verify = vnpay.verifyReturnUrl(req.query);
 
   if (verify.isSuccess) {
+    const order = await Order.findOne({
+      _id: req.query.vnp_TxnRef,
+    });
+    const user = await User.findOne({
+      _id: order.userId,
+    }).select("-password");
+    if (user) {
+      const cart = await Cart.findOne({
+        userId: user.id,
+      });
+      await Cart.updateOne(
+        {
+          _id: cart.id,
+        },
+        {
+          products: [],
+        },
+      );
+    }
     await Order.updateOne(
       { _id: req.query.vnp_TxnRef },
       {
         paymentStatus: "PAID",
       },
     );
-    await Cart.updateOne(
-      {
-        _id: cart.id,
-      },
-      {
-        products: [],
-      },
-    );
+
     return res.redirect(`/order/success/${req.query.vnp_TxnRef}`);
   }
   await Order.updateOne(

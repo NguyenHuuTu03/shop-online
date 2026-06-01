@@ -420,10 +420,32 @@
 }
 /* ===== CANCEL MODAL ===== */
 .order-cancel-modal {
-  border: none;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 9999;
+}
+
+.order-cancel-modal.show {
+  display: block;
+}
+
+.order-cancel-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.order-cancel-modal__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  max-width: 90%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
 }
 
 /* Header */

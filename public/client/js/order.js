@@ -36,6 +36,36 @@ fetch(`/order/order-json`, {
 
 // Hết Đặt hàng
 
+// Open Modal
+const buttonOpenModal = document.querySelectorAll("[open-modal]");
+
+buttonOpenModal.forEach((button) => {
+  button.addEventListener("click", () => {
+    const id = button.getAttribute("open-modal");
+
+    const modal = document.querySelector(`[data-modal="${id}"]`);
+
+    if (modal) {
+      modal.classList.add("show");
+    }
+  });
+});
+
+// Close Modal
+const buttonCloseModal = document.querySelectorAll("[close-modal]");
+
+buttonCloseModal.forEach((button) => {
+  button.addEventListener("click", () => {
+    const id = button.getAttribute("close-modal");
+
+    const modal = document.querySelector(`[data-modal="${id}"]`);
+
+    if (modal) {
+      modal.classList.remove("show");
+    }
+  });
+});
+
 // Huỷ đơn hàng
 const buttonDeleteOrder = document.querySelectorAll("[btn-del-order]");
 if (buttonDeleteOrder.length > 0) {
@@ -54,16 +84,22 @@ if (buttonDeleteOrder.length > 0) {
       const data = await res.json();
       if (data.code == 200) {
         // close modal
-        const cancelModal = document.querySelector("#cancelModal");
+        const modal = document.querySelector(`[data-modal="${id}"]`);
 
-        const modal = bootstrap.Modal.getInstance(cancelModal);
-        modal.hide();
+        if (modal) {
+          modal.classList.remove("show");
+        }
         // End close modal
 
         const elementOrderStatus = document.querySelector(
           `[cancel-order="cancel-${id}"]`,
         );
         elementOrderStatus.innerHTML = "Đã huỷ";
+        const btnCancel = document.querySelector(`[btn-cancel="${id}"]`);
+
+        if (btnCancel) {
+          btnCancel.classList.add("d-none");
+        }
       }
     });
   });
@@ -75,7 +111,6 @@ const formOrder = document.querySelector("#checkoutForm");
 if (formOrder) {
   formOrder.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log(e.target.elements.fullName);
     const formData = {
       fullName: e.target.elements.fullName.value,
       phone: e.target.elements.phone.value,
@@ -83,15 +118,36 @@ if (formOrder) {
       address: e.target.elements.address.value,
       paymentMethod: e.target.elements.paymentMethod.value,
     };
-    const res = await fetch("/order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    let data;
+    if (tokenUser) {
+      const res = await fetch("/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      data = await res.json();
+    } else {
+      const res = await fetch("/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: e.target.elements.fullName.value,
+          phone: e.target.elements.phone.value,
+          email: e.target.elements.email.value,
+          address: e.target.elements.address.value,
+          paymentMethod: e.target.elements.paymentMethod.value,
+          products: JSON.parse(localStorage.getItem("cart")),
+        }),
+      });
+      data = await res.json();
+      localStorage.setItem("cart", JSON.stringify([]));
+      showMiniCart();
+    }
 
-    const data = await res.json();
     if (formData.paymentMethod === "MoMo") {
       const momoRes = await fetch("/payment/momo", {
         method: "POST",
@@ -100,13 +156,11 @@ if (formOrder) {
         },
         body: JSON.stringify({
           id: data.orderId,
-          totalPrice: data.amount,
+          totalPrice: data.totalPrice,
         }),
       });
 
       const momoData = await momoRes.json();
-
-      console.log(momoData);
 
       // redirect sang MoMo
       if (momoData.data.payUrl) window.location.href = momoData.data.payUrl;
@@ -118,7 +172,7 @@ if (formOrder) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderId: data.orderId,
-          amount: data.amount,
+          totalPrice: data.totalPrice,
         }),
       });
 

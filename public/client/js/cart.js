@@ -153,7 +153,7 @@ const handleQuantity = () => {
 //
 
 // Lấy thông tin sản phẩm trong giỏ
-const tokenUser = getCookie("tokenUser");
+// const tokenUser = getCookie("tokenUser");
 const fetchApi = () => {
   const cart = JSON.parse(localStorage.getItem("cart"));
   fetch(`/cart/cart-json`, {
@@ -234,6 +234,7 @@ const fetchApi = () => {
         deleteItem();
         updateTotalSub();
       }
+      showMiniCart();
     });
 };
 

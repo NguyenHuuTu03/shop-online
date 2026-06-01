@@ -221,6 +221,10 @@ module.exports.order = async (req, res) => {
 
         item.productInfo = productInfo;
       }
+      order.totalQuantity = order.products.reduce(
+        (sum, item) => sum + item.quantity,
+        0,
+      );
     }
   }
 

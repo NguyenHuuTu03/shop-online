@@ -164,8 +164,32 @@ const cart = localStorage.getItem("cart");
 if (!cart) {
   localStorage.setItem("cart", JSON.stringify([]));
 }
+const tokenUser = getCookie("tokenUser");
 
-showMiniCart();
+if (tokenUser) {
+  const cartLocal = JSON.parse(localStorage.getItem("cart"));
+
+  if (cartLocal && cartLocal.length > 0) {
+    fetch("/cart/cart-json", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartLocal),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        localStorage.removeItem("cart");
+        localStorage.setItem("cart", JSON.stringify([]));
+
+        showMiniCart();
+      });
+  } else {
+    showMiniCart();
+  }
+} else {
+  showMiniCart();
+}
 // Button Add To Cart
 
 const buttonAddToCart = document.querySelectorAll("[btn-cart]");

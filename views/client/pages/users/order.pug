@@ -24,7 +24,9 @@ block main
               | Ngày đặt:
               +momentDate(order.createdAt)
 
-            .order-item__status.order-item__status--success
+            .order-item__status.order-item__status--success.order-item__status.order-item__status--success(
+              cancel-order=`cancel-${order.id}`
+            )
               //- i.fa-solid.fa-circle-check
               if(order.status == "PENDING")
                 span Chờ xác nhận
@@ -72,7 +74,7 @@ block main
 
               .order-item__product-count
                 i.fa-solid.fa-box-open
-                span 4 sản phẩm
+                span #{order.totalQuantity} sản phẩm
 
             .order-item__footer-right
 
@@ -82,52 +84,58 @@ block main
                   | Tổng thanh toán
 
                 span.order-item__total-price
-                  | 39.360.000đ
+                  | #{order.totalPrice.toLocaleString()} đ
 
               .order-item__actions
 
                 a.order-item__btn.order-item__btn--detail(
-                  href="#"
+                  href=`/order/success/${order.id}`
                 )
                   i.fa-solid.fa-eye
                   span Xem chi tiết
                 if(order.status == "PENDING" || order.status == "CONFIRMED")
                   button.order-item__btn.order-item__btn--cancel(
                     type="button"
-                    data-bs-toggle="modal"
-                    data-bs-target="#cancelModal"
+                    open-modal=order.id
+                    btn-cancel=order.id
                   )
                     i.fa-solid.fa-ban
                     span Hủy đơn
   
-        #cancelModal.modal.fade(tabindex="-1" aria-hidden="true")
-          .modal-dialog.modal-dialog-centered
-            .modal-content.order-cancel-modal
+        .order-cancel-modal(data-modal=`${order.id}`)
+          .order-cancel-modal__overlay
 
-              .order-cancel-modal__header
-                .order-cancel-modal__icon
-                  i.fa-solid.fa-triangle-exclamation
-                button.order-cancel-modal__close(
-                  type="button"
-                  data-bs-dismiss="modal"
-                  aria-label="Đóng"
-                )
-                  i.fa-solid.fa-xmark
+          .order-cancel-modal__content
+            .order-cancel-modal__header
+              .order-cancel-modal__icon
+                i.fa-solid.fa-triangle-exclamation
 
-              .order-cancel-modal__body
-                h5.order-cancel-modal__title Xác nhận hủy đơn hàng?
-                p.order-cancel-modal__desc
-                  | Bạn có chắc chắn muốn xoá đơn hàng <strong> #{order.id} </strong>
-                  
+              button.order-cancel-modal__close(
+                type="button"
+                close-modal=`${order.id}`
+              )
+                i.fa-solid.fa-xmark
 
-              .order-cancel-modal__footer
-                button.order-success__btn.order-success__btn--outline(
-                  type="button"
-                  data-bs-dismiss="modal"
-                ) Giữ đơn hàng
+            .order-cancel-modal__body
+              h5.order-cancel-modal__title Xác nhận hủy đơn hàng?
 
-                button.order-success__btn.order-success__btn--danger(type="button" btn-del-order=order.id)
-                  i.fa-solid.fa-ban
-                  | Xác nhận hủy
+              p.order-cancel-modal__desc
+                | Bạn có chắc chắn muốn xoá đơn hàng
+                strong #{order.id}
+                | ?
+
+            .order-cancel-modal__footer
+              button.order-success__btn.order-success__btn--outline(
+                type="button"
+                close-modal=`${order.id}`
+              )
+                | Giữ đơn hàng
+
+              button.order-success__btn.order-success__btn--danger(
+                type="button"
+                btn-del-order=order.id
+              )
+                i.fa-solid.fa-ban
+                | Xác nhận hủy
 block scripts
   script(src="/client/js/order.js")
