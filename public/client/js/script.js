@@ -145,7 +145,7 @@ const showMiniCart = () => {
   const tokenUser = getCookie("tokenUser");
   const miniCart = document.querySelector("[data-mini-cart]");
   if (tokenUser) {
-    fetch(`http://localhost:3000/cart/mini-cart`)
+    fetch(`/cart/mini-cart`)
       .then((res) => res.json())
       .then((data) => {
         miniCart.innerHTML = data.quantity;
@@ -182,7 +182,7 @@ if (buttonAddToCart.length > 0) {
 
       // đã login
       if (tokenUser) {
-        fetch(`http://localhost:3000/cart/cart-json`, {
+        fetch(`/cart/cart-json`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -225,7 +225,7 @@ if (formCart) {
     const tokenUser = getCookie("tokenUser");
 
     if (tokenUser) {
-      fetch(`http://localhost:3000/cart/cart-json`, {
+      fetch(`/cart/cart-json`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

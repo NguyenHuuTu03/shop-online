@@ -1,4 +1,4 @@
-fetch(`http://localhost:3000/order/order-json`, {
+fetch(`/order/order-json`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -42,7 +42,7 @@ if (buttonDeleteOrder.length > 0) {
   buttonDeleteOrder.forEach((button) => {
     button.addEventListener("click", async () => {
       const id = button.getAttribute("btn-del-order");
-      const res = await fetch(`http://localhost:3000/order/delete/${id}`, {
+      const res = await fetch(`/order/delete/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -92,22 +92,41 @@ if (formOrder) {
     });
 
     const data = await res.json();
-    if (formData.paymentMethod === "MOMO") {
+    if (formData.paymentMethod === "MoMo") {
       const momoRes = await fetch("/payment/momo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          orderId: data.orderId,
-          amount: data.amount,
+          id: data.orderId,
+          totalPrice: data.amount,
         }),
       });
 
       const momoData = await momoRes.json();
 
+      console.log(momoData);
+
       // redirect sang MoMo
       if (momoData.data.payUrl) window.location.href = momoData.data.payUrl;
+      return;
+    }
+    if (formData.paymentMethod === "VNPay") {
+      const res = await fetch("/payment/vnpay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: data.orderId,
+          amount: data.amount,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (result.paymentUrl) {
+        window.location.href = result.paymentUrl;
+      }
       return;
     }
 

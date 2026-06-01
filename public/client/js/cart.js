@@ -37,7 +37,7 @@ const deleteItem = () => {
       updateTotalSub();
 
       if (tokenUser) {
-        fetch(`http://localhost:3000/cart/delete/${id}`, {
+        fetch(`/cart/delete/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -82,7 +82,7 @@ const handleQuantity = () => {
         cartTotal.setAttribute("total-price", total);
         updateTotalSub();
         if (tokenUser) {
-          fetch(`http://localhost:3000/cart/update`, {
+          fetch(`/cart/update`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
@@ -156,7 +156,7 @@ const handleQuantity = () => {
 const tokenUser = getCookie("tokenUser");
 const fetchApi = () => {
   const cart = JSON.parse(localStorage.getItem("cart"));
-  fetch(`http://localhost:3000/cart/cart-json`, {
+  fetch(`/cart/cart-json`, {
     method: "POST",
     headers: {
       Accept: "application/json",

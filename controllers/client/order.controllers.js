@@ -124,7 +124,7 @@ module.exports.orderPost = async (req, res) => {
       (sum, item) => sum + item.totalPrice,
       0,
     );
-    if (paymentMethod == "VNPay") {
+    if (paymentMethod == "VNPay" || paymentMethod == "MoMo") {
       dataOrder = {
         userId: user.id,
         fullName: req.body.fullName,
@@ -138,14 +138,7 @@ module.exports.orderPost = async (req, res) => {
       };
       const order = new Order(dataOrder);
       await order.save();
-      await Cart.updateOne(
-        {
-          _id: cart.id,
-        },
-        {
-          products: [],
-        },
-      );
+
       return res.json({
         code: 200,
         orderId: order.id,
