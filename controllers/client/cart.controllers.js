@@ -5,34 +5,8 @@ const caculaterHelpers = require("../../helpers/caculater");
 
 // [GET] /cart
 module.exports.index = async (req, res) => {
-  const tokenUser = req.cookies.tokenUser;
-  let dataCart = {};
-  if (tokenUser) {
-    const user = await User.findOne({
-      deleted: false,
-      tokenUser: tokenUser,
-    }).select("-password");
-    const cart = await Cart.findOne({
-      userId: user.id,
-    });
-    for (const item of cart.products) {
-      const product = await Products.findOne({
-        deleted: false,
-        _id: item.id,
-      });
-      caculaterHelpers.caculaterPriceNew(product);
-      item.totalPrice = item.quantity * product.priceNew;
-    }
-    cart.totalPrice = cart.products.reduce(
-      (sum, item) => sum + item.totalPrice,
-      0,
-    );
-    dataCart = cart;
-  }
-
   res.render("client/pages/cart/index", {
     pageTitle: "Giỏ hàng",
-    cart: dataCart,
   });
 };
 
@@ -56,11 +30,10 @@ module.exports.cartJson = async (req, res) => {
           if (index != -1) {
             dataCart[index].quantity += item.quantity;
           } else {
-            dataCart.push(item); // thêm mới
+            dataCart.push(item);
           }
-
-          await Cart.updateOne({ _id: cart.id }, { products: dataCart });
         }
+        await Cart.updateOne({ _id: cart.id }, { products: dataCart });
       }
     } else {
       const dataCart = new Cart({
@@ -78,9 +51,13 @@ module.exports.cartJson = async (req, res) => {
         deleted: false,
       }).lean();
       caculaterHelpers.caculaterPriceNew(productInfo);
-      productInfo.totalPrice = productInfo.priceNew * item.quantity;
+      item.totalPrice = productInfo.priceNew * item.quantity;
       item.productInfo = productInfo;
     }
+    cartNew.totalPrice = cartNew.products.reduce(
+      (sum, item) => sum + item.totalPrice,
+      0,
+    );
   } else {
     cartNew = {
       products: req.body,
@@ -91,9 +68,13 @@ module.exports.cartJson = async (req, res) => {
         deleted: false,
       }).lean();
       caculaterHelpers.caculaterPriceNew(productInfo);
-      productInfo.totalPrice = productInfo.priceNew * item.quantity;
+      item.totalPrice = productInfo.priceNew * item.quantity;
       item.productInfo = productInfo;
     }
+    cartNew.totalPrice = cartNew.products.reduce(
+      (sum, item) => sum + item.totalPrice,
+      0,
+    );
   }
   res.json({
     code: 200,

@@ -1,0 +1,133 @@
+extends ../../layouts/default
+include ../../mixins/moment
+
+block main
+  .orders-page
+    .container
+
+      h3.orders-page__title Đơn hàng của tôi
+
+      // ===== ORDER =====
+      each order in orders
+        .order-item
+
+          // ===== Header =====
+          .order-item__top
+
+            .order-item__code
+              | Đơn hàng:
+              strong ##{order.id}
+
+            .order-item__dot •
+
+            .order-item__date
+              | Ngày đặt:
+              +momentDate(order.createdAt)
+
+            .order-item__status.order-item__status--success
+              //- i.fa-solid.fa-circle-check
+              if(order.status == "PENDING")
+                span Chờ xác nhận
+              else if(order.status == "CONFIRMED")
+                span Đã xác nhận
+              else if(order.status == "PROCESSING")
+                span Đang chuẩn bị hàng
+              else if(order.status == "SHIPPING")
+                span Đang giao hàng
+              else if(order.status == "COMPLETED")
+                span Đã giao thành công
+              else 
+                span Đã hủy
+
+          // ===== Products =====
+          .order-item__products
+
+            each item in order.products
+
+              .order-item__product
+
+                a(href=`/products/detail/${item.productInfo.slug}`)
+                  img.order-item__image(
+                  src=item.productInfo.thumbnail
+                  alt=item.productInfo.title
+                  )
+
+                a.order-item__content(href=`/products/detail/${item.productInfo.slug}`)
+
+                  p.order-item__name
+                    | #{item.productInfo.title}
+
+                  .order-item__meta
+                    span.order-item__quantity Số lượng: #{item.quantity}
+
+                  .order-item__price
+                    | #{item.productInfo.priceNew.toLocaleString()} đ
+
+            
+
+          // ===== Footer =====
+          .order-item__footer
+
+            .order-item__footer-left
+
+              .order-item__product-count
+                i.fa-solid.fa-box-open
+                span 4 sản phẩm
+
+            .order-item__footer-right
+
+              .order-item__total-wrap
+
+                span.order-item__total-label
+                  | Tổng thanh toán
+
+                span.order-item__total-price
+                  | 39.360.000đ
+
+              .order-item__actions
+
+                a.order-item__btn.order-item__btn--detail(
+                  href="#"
+                )
+                  i.fa-solid.fa-eye
+                  span Xem chi tiết
+                if(order.status == "PENDING" || order.status == "CONFIRMED")
+                  button.order-item__btn.order-item__btn--cancel(
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cancelModal"
+                  )
+                    i.fa-solid.fa-ban
+                    span Hủy đơn
+  
+        #cancelModal.modal.fade(tabindex="-1" aria-hidden="true")
+          .modal-dialog.modal-dialog-centered
+            .modal-content.order-cancel-modal
+
+              .order-cancel-modal__header
+                .order-cancel-modal__icon
+                  i.fa-solid.fa-triangle-exclamation
+                button.order-cancel-modal__close(
+                  type="button"
+                  data-bs-dismiss="modal"
+                  aria-label="Đóng"
+                )
+                  i.fa-solid.fa-xmark
+
+              .order-cancel-modal__body
+                h5.order-cancel-modal__title Xác nhận hủy đơn hàng?
+                p.order-cancel-modal__desc
+                  | Bạn có chắc chắn muốn xoá đơn hàng <strong> #{order.id} </strong>
+                  
+
+              .order-cancel-modal__footer
+                button.order-success__btn.order-success__btn--outline(
+                  type="button"
+                  data-bs-dismiss="modal"
+                ) Giữ đơn hàng
+
+                button.order-success__btn.order-success__btn--danger(type="button" btn-del-order=order.id)
+                  i.fa-solid.fa-ban
+                  | Xác nhận hủy
+block scripts
+  script(src="/client/js/order.js")

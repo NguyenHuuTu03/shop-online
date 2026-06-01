@@ -1,0 +1,129 @@
+extends ../../layouts/default
+
+block main
+  .checkout-page
+    .container.py-5
+
+      .text-center.mb-5
+        h2.checkout-page__title Thanh toán đơn hàng
+        p.checkout-page__subtitle Hoàn tất thông tin để đặt hàng
+
+      .row.g-4
+
+        // ================= LEFT =================
+        .col-lg-7
+
+          .checkout-card
+
+            .checkout-card__header
+              h4.mb-0
+                i.fa-solid.fa-user.me-2
+                | Thông tin nhận hàng
+
+            .checkout-card__body
+
+              form#checkoutForm
+
+                .mb-3
+                  label.form-label Họ và tên
+                  input.form-control(
+                    type="text"
+                    name="fullName"
+                    placeholder="Nhập họ và tên"
+                  )
+
+                .mb-3
+                  label.form-label Số điện thoại
+                  input.form-control(
+                    type="text"
+                    name="phone"
+                    placeholder="Nhập số điện thoại"
+                  )
+
+                .mb-3
+                  label.form-label Email
+                  input.form-control(
+                    type="email"
+                    name="email"
+                    placeholder="Nhập email"
+                  )
+
+                .mb-4
+                  label.form-label Địa chỉ nhận hàng
+                  textarea.form-control(
+                    rows="4"
+                    name="address"
+                    placeholder="Nhập địa chỉ nhận hàng"
+                  )
+
+                h5.mb-3 Phương thức thanh toán
+
+                .payment-methods
+
+                  label.payment-item
+                    input(
+                      type="radio"
+                      name="paymentMethod"
+                      value="COD"
+                      checked
+                    )
+
+                    .payment-item__content
+                      .payment-item__left
+                        i.fa-solid.fa-money-bill-wave
+                        span Thanh toán khi nhận hàng
+
+                      span.badge.text-bg-success Đề xuất
+
+                  label.payment-item
+                    input(
+                      type="radio"
+                      name="paymentMethod"
+                      value="MoMo"
+                    )
+
+                    .payment-item__content
+                      .payment-item__left
+                        img(
+                          src="data:image/png;base64,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"
+                          width="24"
+                        )
+                        span Thanh toán qua MoMo
+                  label.payment-item
+                    input(
+                      type="radio"
+                      name="paymentMethod"
+                      value="VNPay"
+                    )
+
+                    .payment-item__content
+                      .payment-item__left
+                        img(
+                          src="data:image/jpeg;base64,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"
+                          width="24"
+                        )
+                        span Thanh toán qua VNPay
+
+                button.btn.btn-primary.btn-lg.w-100.mt-4(id="btnOrder")
+                  i.fa-solid.fa-credit-card.me-2
+                  | Đặt hàng
+
+        // ================= RIGHT =================
+        .col-lg-5
+
+          .checkout-card
+
+            .checkout-card__header
+              h4.mb-0
+                i.fa-solid.fa-cart-shopping.me-2
+                | Đơn hàng của bạn
+
+            .checkout-card__body
+              .order-products
+
+              hr
+              .summary-total
+                span Tổng thanh toán
+                span.totalPrice 0 đ
+block scripts
+  script(src="/client/js/order.js")

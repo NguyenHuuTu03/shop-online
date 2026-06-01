@@ -307,3 +307,259 @@ body {
   letter-spacing: 8px;
   border-radius: 16px !important;
 }
+
+/* ===================================== User-Order ===================================== */
+/* orders-page.css */
+
+.orders-page {
+  padding: 2rem 0;
+}
+
+.orders-page__title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+/* Card */
+.order-item {
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+.order-item:hover {
+  border-color: #ccc;
+}
+
+/* Top */
+.order-item__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  background: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+  flex-wrap: wrap;
+}
+
+.order-item__code,
+.order-item__date {
+  font-size: 13px;
+  color: #888;
+}
+
+.order-item__code strong,
+.order-item__date strong {
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-left: 3px;
+}
+
+.order-item__code strong {
+  font-family: monospace;
+}
+
+.order-item__dot {
+  color: #ddd;
+}
+
+.order-item__status {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 11px;
+  border-radius: 20px;
+}
+
+.order-item__status i {
+  font-size: 12px;
+}
+
+.order-item__status--success {
+  background: #eaf3de;
+  color: #27500a;
+}
+.order-item__status--pending {
+  background: #faeeda;
+  color: #633806;
+}
+.order-item__status--shipping {
+  background: #eeedfe;
+  color: #3c3489;
+}
+.order-item__status--cancelled {
+  background: #fcebeb;
+  color: #791f1f;
+}
+
+/* Products */
+.order-item__products {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.order-item__product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background: #fafafa;
+}
+.order-item__product a {
+  text-decoration: none;
+  color: #0000;
+}
+
+.order-item__image {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.order-item__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-item__name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-item__meta {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 3px;
+}
+
+.order-item__price {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+/* Footer */
+.order-item__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  border-top: 1px solid #f0f0f0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.order-item__product-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #888;
+}
+
+.order-item__product-count i {
+  font-size: 15px;
+}
+
+.order-item__footer-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.order-item__total-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-item__total-label {
+  font-size: 13px;
+  color: #888;
+}
+
+.order-item__total-price {
+  font-size: 15px;
+  font-weight: 500;
+  color: #a32d2d;
+}
+
+/* Buttons */
+.order-item__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-item__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  padding: 5px 13px;
+  border-radius: 8px;
+  border: 1px solid;
+  cursor: pointer;
+  text-decoration: none;
+  background: transparent;
+}
+
+.order-item__btn i {
+  font-size: 14px;
+}
+
+.order-item__btn--detail {
+  border-color: #ddd;
+  color: #1a1a1a;
+}
+
+.order-item__btn--detail:hover {
+  background: #f5f5f5;
+}
+
+.order-item__btn--cancel {
+  border-color: rgba(240, 149, 133, 0.5);
+  color: #a32d2d;
+}
+
+.order-item__btn--cancel:hover {
+  background: #fcebeb;
+}
+
+/* Responsive */
+@media (max-width: 540px) {
+  .order-item__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-item__footer-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .order-item__dot {
+    display: none;
+  }
+}
+/* ===================================== User-Order ===================================== */

@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const axios = require("axios");
+const moment = require("moment");
 
 const app = express();
 const port = process.env.PORT;
@@ -32,6 +34,8 @@ app.use(
 app.use(flash());
 
 database();
+
+app.locals.moment = moment;
 
 clientRoutes(app);
 

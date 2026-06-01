@@ -1,0 +1,124 @@
+extends ../../layouts/default
+
+block main
+  .order-success
+    .container
+
+      .order-success__wrapper
+
+        // ===== Header =====
+        .order-success__header
+          .order-success__icon
+            i.fa-solid.fa-circle-check
+          h1.order-success__title Đặt hàng thành công!
+          p.order-success__desc
+            | Cảm ơn bạn đã mua hàng tại cửa hàng của chúng tôi.
+            br
+            | Đơn hàng đang được xử lý và sẽ sớm được xác nhận.
+
+        // ===== Order Info =====
+        .order-success__card
+          h3.order-success__card-title
+            i.fa-solid.fa-receipt
+            | Thông tin đơn hàng
+
+          .order-success__row
+            span.order-success__label Mã đơn hàng
+            span.order-success__value.order-success__value--id #{order.id}
+
+          .order-success__row
+            span.order-success__label Trạng thái
+            span.order-success__status(cancel-order=`cancel-${order.id}`) #{order.status}
+
+          .order-success__row
+            span.order-success__label Người nhận
+            span.order-success__value #{order.fullName}
+
+          .order-success__row
+            span.order-success__label Số điện thoại
+            span.order-success__value #{order.phone}
+
+          .order-success__row
+            span.order-success__label Email
+            span.order-success__value #{order.email}
+
+          .order-success__row
+            span.order-success__label Địa chỉ
+            span.order-success__value #{order.address}
+
+          .order-success__row
+            span.order-success__label Phương thức thanh toán
+            span.order-success__value #{order.paymentMethod}
+
+          .order-success__row.order-success__row--total
+            span.order-success__label Tổng thanh toán
+            span.order-success__price #{order.totalPrice.toLocaleString()}đ
+
+        // ===== Products =====
+        .order-success__card
+          h3.order-success__card-title
+            i.fa-solid.fa-cart-shopping
+            | Sản phẩm đã đặt
+          each item in order.products
+            .order-product
+              .order-product__left
+                img.order-product__img(
+                  src=item.productInfo.thumbnail
+                  alt=item.productInfo.title
+                )
+                .order-product__info
+                  h4.order-product__name #{item.productInfo.title}
+                  p.order-product__meta Số lượng: #{item.quantity}
+                  p.order-product__meta Đơn giá: #{item.priceNew.toLocaleString()} đ
+              span.order-product__total #{item.totalPrice.toLocaleString()} đ
+
+        // ===== Actions =====
+        .order-success__actions
+          a.order-success__btn.order-success__btn--primary(href="/products")
+            i.fa-solid.fa-house
+            | Tiếp tục mua sắm
+
+          a.order-success__btn.order-success__btn--outline(href="/user/orders")
+            i.fa-solid.fa-box
+            | Đơn hàng của tôi
+
+          button.order-success__btn.order-success__btn--danger(
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#cancelModal"
+          )
+            i.fa-solid.fa-ban
+            | Hủy đơn hàng
+
+  // ===== Cancel Modal =====
+  #cancelModal.modal.fade(tabindex="-1" aria-hidden="true")
+    .modal-dialog.modal-dialog-centered
+      .modal-content.order-cancel-modal
+
+        .order-cancel-modal__header
+          .order-cancel-modal__icon
+            i.fa-solid.fa-triangle-exclamation
+          button.order-cancel-modal__close(
+            type="button"
+            data-bs-dismiss="modal"
+            aria-label="Đóng"
+          )
+            i.fa-solid.fa-xmark
+
+        .order-cancel-modal__body
+          h5.order-cancel-modal__title Xác nhận hủy đơn hàng?
+          p.order-cancel-modal__desc
+            | Bạn có chắc chắn muốn xoá đơn hàng <strong> #{order.id} </strong>
+            
+
+        .order-cancel-modal__footer
+          button.order-success__btn.order-success__btn--outline(
+            type="button"
+            data-bs-dismiss="modal"
+          ) Giữ đơn hàng
+
+          button.order-success__btn.order-success__btn--danger(type="button" btn-del-order=order.id)
+            i.fa-solid.fa-ban
+            | Xác nhận hủy
+block scripts
+  script(src="/client/js/order.js")

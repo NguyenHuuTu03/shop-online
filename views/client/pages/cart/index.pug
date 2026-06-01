@@ -35,7 +35,7 @@ block main
 
             .order-summary__row
               span.order-summary__label Tạm tính
-              span.order-summary__value(total-cart) #{cart.totalPrice.toLocaleString()} đ
+              span.order-summary__value(total-cart) 0 đ
 
             .order-summary__row
               span.order-summary__label Phí vận chuyển
@@ -45,10 +45,10 @@ block main
 
             .order-summary__total-row
               span.order-summary__total-label Tổng tiền
-              span.order-summary__total-amount(total-cart) #{cart.totalPrice.toLocaleString()} đ
+              span.order-summary__total-amount(total-cart) 0 đ
 
-            button.checkout-btn(type="button")
-              span.checkout-btn__text Thanh toán
+            a.checkout-btn(href="/order")
+              span.checkout-btn__text Đặt hàng
 
 block scripts
   script(src="/client/js/cart.js")

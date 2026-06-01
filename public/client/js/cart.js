@@ -24,29 +24,34 @@ const updateTotalSub = () => {
 // button delete item cart
 const deleteItem = () => {
   const buttonDelete = document.querySelectorAll("[btn-delete]");
-  console.log(buttonDelete);
-  if (buttonDelete.length > 0) {
-    buttonDelete.forEach((button) => {
-      button.addEventListener("click", () => {
-        const id = button.getAttribute("btn-delete");
-        const elementDelete = document.querySelector(
-          `[data-product-id="${id}"]`,
-        );
-        elementDelete.classList.add("d-none");
-        updateTotalSub();
-        const quantity = parseInt(button.getAttribute("quantity"));
-        const miniCart = document.querySelector("[data-mini-cart]");
-        let countQuantity = parseInt(miniCart.textContent);
-        countQuantity -= quantity;
 
-        miniCart.innerHTML = countQuantity;
+  buttonDelete.forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.getAttribute("btn-delete");
 
+      const row = document.querySelector(`[data-product-id="${id}"]`);
+      const quantity = parseInt(row.querySelector(".qty-input").value);
+
+      row.classList.add("d-none");
+
+      updateTotalSub();
+
+      if (tokenUser) {
         fetch(`http://localhost:3000/cart/delete/${id}`, {
           method: "DELETE",
-        });
-      });
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            showMiniCart();
+          });
+      } else {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        const newCart = cart.filter((item) => item.id != id);
+        localStorage.setItem("cart", JSON.stringify(newCart));
+        showMiniCart();
+      }
     });
-  }
+  });
 };
 
 // End button delete item cart
@@ -76,17 +81,22 @@ const handleQuantity = () => {
         cartTotal.innerHTML = `${total.toLocaleString("vi-VN")} đ`;
         cartTotal.setAttribute("total-price", total);
         updateTotalSub();
-
-        fetch(`http://localhost:3000/cart/update`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            productId,
-            quantity,
-          }),
-        });
+        if (tokenUser) {
+          fetch(`http://localhost:3000/cart/update`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              productId,
+              quantity,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              showMiniCart();
+            });
+        }
       };
 
       if (buttonDown) {
@@ -99,7 +109,17 @@ const handleQuantity = () => {
             inputQuantity.value = quantity;
 
             updateTotalPrice();
-            showMiniCart();
+            if (!tokenUser) {
+              const cart = JSON.parse(localStorage.getItem("cart"));
+              const indexExits = cart.findIndex((item) => item.id == productId);
+              if (indexExits == -1) {
+                cart.push(dataCart);
+              } else {
+                cart[indexExits].quantity -= 1;
+              }
+              localStorage.setItem("cart", JSON.stringify(cart));
+              showMiniCart();
+            }
           }
         });
       }
@@ -113,7 +133,17 @@ const handleQuantity = () => {
           inputQuantity.value = quantity;
 
           updateTotalPrice();
-          showMiniCart();
+          if (!tokenUser) {
+            const cart = JSON.parse(localStorage.getItem("cart"));
+            const indexExits = cart.findIndex((item) => item.id == productId);
+            if (indexExits == -1) {
+              cart.push(dataCart);
+            } else {
+              cart[indexExits].quantity += 1;
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            showMiniCart();
+          }
         });
       }
     });
@@ -136,7 +166,6 @@ const fetchApi = () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       const tableBody = document.querySelector(".cart-table__body");
       const htmls = data.cart.products.map((item) => {
         return `
@@ -183,7 +212,7 @@ const fetchApi = () => {
           </td>
 
           <td class="cart-table__td cart-table__td--subtotal">
-            <span class="cart-subtotal" total-price="${item.productInfo.totalPrice}">${item.productInfo.totalPrice.toLocaleString()} đ</span>
+            <span class="cart-subtotal" total-price="${item.totalPrice}">${item.totalPrice.toLocaleString()} đ</span>
           </td>
 
           <td class="cart-table__td cart-table__td--action">
@@ -203,11 +232,15 @@ const fetchApi = () => {
         tableBody.innerHTML = htmls.join("");
         handleQuantity();
         deleteItem();
-        localStorage.setItem("cart", JSON.stringify([]));
+        updateTotalSub();
       }
     });
 };
+
 if (tokenUser) {
+  fetchApi();
+  localStorage.removeItem("cart");
+} else {
   fetchApi();
 }
 

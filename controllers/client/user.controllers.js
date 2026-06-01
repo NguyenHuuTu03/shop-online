@@ -1,5 +1,7 @@
 const md5 = require("md5");
 const User = require("../../models/users.model");
+const Order = require("../../models/order.model");
+const Products = require("../../models/product.model");
 const generateHelpers = require("../../helpers/generate");
 const ForgotPassword = require("../../models/forgot-password");
 const sendHelpers = require("../../helpers/sendMail");
@@ -190,4 +192,40 @@ module.exports.resetPasswordPost = async (req, res) => {
   await User.updateOne({ email: email }, { password: md5(password) });
   delete req.session.email;
   res.redirect("/users/login");
+};
+
+// [GET] /users/orders
+module.exports.order = async (req, res) => {
+  const tokenUser = req.cookies.tokenUser;
+
+  const user = await User.findOne({
+    deleted: false,
+    tokenUser: tokenUser,
+  }).select("-password");
+
+  const orders = await Order.find({
+    userId: user.id,
+  });
+
+  // xử lý gắn productInfo vào order.products
+  for (const order of orders) {
+    for (const item of order.products) {
+      const productInfo = await Products.findOne({
+        _id: item.productId,
+      }).lean();
+
+      if (productInfo) {
+        productInfo.priceNew = Math.round(
+          productInfo.price * (1 - productInfo.discount / 100),
+        );
+
+        item.productInfo = productInfo;
+      }
+    }
+  }
+
+  res.render("client/pages/users/order", {
+    pageTitle: "Đơn hàng của tôi",
+    orders: orders,
+  });
 };
