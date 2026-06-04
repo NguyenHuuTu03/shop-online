@@ -1,0 +1,87 @@
+extends ../../layouts/default
+include ../../mixins/table-tree
+
+block main
+  .category-container
+
+    //- TOP BAR
+    .category-topbar
+      .category-title
+        span.title-line
+        h2 Quản lý Danh mục
+
+      .category-actions
+        form.search-box(method="GET")
+          input(
+            type="text"
+            name="keyword"
+            placeholder="Tìm kiếm theo tên danh mục..."
+          )
+          button(type="submit")
+            i.fa-solid.fa-magnifying-glass
+
+        a.btn-add(href=`${prefixAdmin}/categories/create`)
+          i.fa-solid.fa-plus
+          span Thêm Danh mục
+
+    //- CONTENT
+    .category-content
+
+      //- FILTER
+      .filter-bar
+        select(name="filter").form-filter
+          option(value="all-all") Tất cả danh mục
+          option(value="status-active") Hoạt động
+          option(value="status-inactive") Dừng hoạt động
+          option(value="title-asc") Tên A → Z
+          option(value="title-desc") Tên Z → A
+          option(value="position-asc") Vị trí tăng dần
+          option(value="position-desc") Vị trí giảm dần
+
+        select(name="limit").form-filter-limit
+          option(value="10") 10 danh mục
+          option(value="15") 15 danh mục
+          option(value="20") 20 danh mục
+
+      //- TABLE
+      .table-wrapper
+        table.category-table
+          thead
+            tr
+              th.col-checkbox
+                input(type="checkbox" id="check-all")
+
+              th.col-stt STT
+              th.col-image Ảnh
+              th Tên danh mục
+              th.col-position Vị trí
+              th.col-status Trạng thái
+              th.col-action Hành động
+          if(categories.length > 0)
+            tbody
+              +table-tree(categories)
+
+          else 
+            tr
+              td(colspan="9")
+                .empty-state Không có danh mục nào
+
+      //- PAGINATION
+      nav.pagination-wrapper
+        ul.pagination
+          if currentPage > 1
+            li.page-item
+              a.page-link(href=`?page=${currentPage - 1}`) Previous
+
+          - var startPage = Math.max(1, currentPage - 1)
+          - var endPage = Math.min(totalPage, currentPage + 1)
+
+          - for (let i = startPage; i <= endPage; i++)
+            li.page-item(class=(currentPage == i ? "active" : ""))
+              a.page-link(href=`?page=${i}`) #{i}
+
+          if currentPage < totalPage
+            li.page-item
+              a.page-link(href=`?page=${currentPage + 1}`) Next
+    
+    form(action=prefixAdmin + `/categories/del/`, method="post" form-delete) 

@@ -1,0 +1,46 @@
+mixin table-tree(items, level = 1)
+  each item, index in items
+    - const prefix = Array(level + 1).join("-- ");
+    tr
+      td
+        input(type="checkbox" value=item._id class="check-item")
+
+      td.text-center #{index + 1}
+
+      td
+        .img-box
+          img.category-image(
+            src=item.thumbnail
+            alt=item.title
+          )
+
+      td
+        .category-name #{item.title}
+
+      td.text-center
+        span.position-badge #{item.position}
+
+      td.col-status
+        if item.status == "active"
+          span.status-active Hoạt động
+        else
+          span.status-inactive Dừng hoạt động
+
+      td.col-action
+        .action-group
+          a.action-btn.view(
+            href=`${prefixAdmin}/categories/detail/${item._id}`
+            title="Chi tiết"
+          )
+            i.fa-regular.fa-eye
+
+          a.action-btn.edit(
+            href=`${prefixAdmin}/categories/edit/${item._id}`
+            title="Chỉnh sửa"
+          )
+            i.fa-regular.fa-pen-to-square
+
+          button.action-btn.delete(del-item=item.id)
+            i.fa-regular.fa-trash-can
+    if item.children && item.children.length > 0
+      +table-tree(item.children, level + 1)

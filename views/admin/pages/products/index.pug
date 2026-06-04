@@ -1,0 +1,116 @@
+extends ../../layouts/default
+
+block main
+  .product-container
+
+    //- Top Bar
+    .product-topbar
+      .product-title
+        span.title-line
+        h2 Quản lý Sản phẩm
+
+      .product-actions
+        form.search-box
+          input(
+            type="text"
+            name="keyword"
+            placeholder="Tìm kiếm theo tên sản phẩm..."
+          )
+          button(type="submit")
+            i.fa-solid.fa-magnifying-glass
+
+        a.btn-add(href="/admin/products/create")
+          i.fa-solid.fa-plus
+          span Thêm Sản phẩm
+
+    //- Content
+    .product-content
+
+      //- Filter
+      .filter-bar
+        select.form-filter
+          option(value="all-all") Tất cả sản phẩm
+          option(value="status-active") Hoạt động
+          option(value="status-inactive") Dừng hoạt động
+          option(value="title-asc") Tên A → Z
+          option(value="title-desc") Tên Z → A
+          option(value="price-asc") Giá tăng dần
+          option(value="price-desc") Giá giảm dần
+          option(value="position-asc") Vị trí tăng dần
+          option(value="position-desc") Vị trí giảm dần
+
+        select.form-filter-limit
+          option(value="10") 10 sản phẩm
+          option(value="15") 15 sản phẩm
+          option(value="20") 20 sản phẩm
+
+      .table-wrapper
+        table.product-table
+          thead
+            tr
+              th.col-checkbox
+                input(type="checkbox" check-all)
+              th.col-stt STT
+              th.col-image Ảnh
+              th.col-name Tên sản phẩm
+              th.col-price.text-center Giá
+              th.col-position Vị trí
+              th.col-status Trạng thái
+              th.col-action Hành động
+          if(products.length > 0)
+            tbody
+              each item, index in products
+                tr
+                  td
+                    input(type="checkbox" check-item=item.id)
+                  td.text-center #{index + 1}
+                  td
+                    .img-box
+                      img.product-image(
+                        src=item.thumbnail
+                        alt=item.title
+                      )
+                  td
+                    .product-name #{item.title}
+                  td
+                    span.product-price.text-center #{item.price.toLocaleString()} đ
+                  td.text-center
+                    span.position-badge #{item.position}
+                  if(item.status == "active")
+                    td
+                      button.status-active Hoạt động
+                  if(item.status == "inactive")
+                    td
+                      button.status-inactive Dừng hoạt động
+                  td
+                    .action-group
+                      a.action-btn.view(href=prefixAdmin + `/products/detail/${item.id}` title="Chi tiết")
+                        i.fa-regular.fa-eye
+                      a.action-btn.edit(href= prefixAdmin + `/products/edit/${item.id}` title="Chỉnh sửa")
+                        i.fa-regular.fa-pen-to-square
+                      button.action-btn.delete(del-item=item.id)
+                        i.fa-regular.fa-trash-can
+          else 
+            tr
+              td(colspan="9")
+                .empty-state Không có sản phẩm nào
+            
+
+      //- Pagination
+      nav.pagination-wrapper(aria-label="Phân trang sản phẩm")
+        ul.pagination
+          if(currentPage > 1)
+            li.page-item(btn-pre=`${currentPage - 1}`)
+              button.page-link Previous
+          - var startPage = Math.max(1, currentPage - 1)
+          - var endPage = Math.min(currentPage + 1, totalPage)
+          - for(let i = startPage; i <= endPage; i++)
+            li.page-item(btn-page = `${i}` class=`${currentPage == i? "active": ""}`)
+              button.page-link #{i}
+          if(currentPage < totalPage)
+            li.page-item(btn-nex=`${currentPage + 1}`)
+              button.page-link Next
+
+  form(action=prefixAdmin + `/products/del/`, method="post" form-delete) 
+block scripts 
+  script(src="/admin/js/product.js") 

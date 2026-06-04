@@ -1,0 +1,263 @@
+extends ../../layouts/default.pug
+
+block main
+  .product-create
+
+    //- ================= TOPBAR =================
+    .product-create__topbar
+      .product-create__title
+        span.title-line
+        h2 #{pageTitle}
+      .product-create__actions
+        a.btn-back(href=`${prefixAdmin}/products`)
+          i.fa-solid.fa-arrow-left
+          span Danh sách
+
+    //- ================= FORM =================
+    form.product-create__form(
+      action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+
+      //- ── BASIC INFO ──
+      .product-create__grid
+        .product-create__card
+          h3.product-create__card-title Thông tin cơ bản
+
+          .product-create__field
+            label Tên sản phẩm
+            input.product-create__input(type="text" name="title" placeholder="Tên sản phẩm..." value=product.title)
+
+          .product-create__field
+            label Giá (VNĐ)
+            input.product-create__input(type="number" name="price" placeholder="0" min="0" value=product.price)
+
+          .product-create__field
+            label Giảm giá (%)
+            input.product-create__input(type="number" name="discount" placeholder="0" min="0" max="100" value=product.discount)
+
+          .product-create__field
+            label Mô tả
+            textarea.product-create__textarea(name="description" placeholder="Mô tả ngắn về sản phẩm...") !{product.description}
+
+          .product-create__field
+            label Bảo hành
+            textarea.product-create__textarea(name="warranty" placeholder="VD: 12 tháng chính hãng...") !{product.warranty}
+
+          .product-create__field
+            label Thông tin vận chuyển
+            textarea.product-create__textarea(name="shippingInfo" placeholder="VD: Miễn phí vận chuyển đơn trên 500k...") !{product.shippingInfo}
+
+        //- ── RIGHT COLUMN ──
+        .product-create__card
+          h3.product-create__card-title Phân loại & Trạng thái
+
+          .product-create__field
+            label Thumbnail
+            input.product-create__input#thumbnailInput(
+              type="file"
+              name="thumbnail"
+              accept="image/*"
+              btn-thumb
+            )
+            img#thumbnailPreview.preview-img(src=product.thumbnail alt=product.title )
+
+          .product-create__field
+            label Ảnh sản phẩm
+            input.product-create__input(
+              type="file"
+              name="images"
+              multiple
+              accept="image/*"
+              btn-image
+            )
+            .images-preview#imagesPreview
+              each img in product.images 
+                img(src=img alt="ảnh" class="preview-img")
+
+          .product-create__field
+            label Danh mục
+            select.product-create__select(name="categoryId")
+              option(value="") -- Chọn danh mục --
+              each category in categories
+                option(value=category._id selected=category.id == product.categoryId) #{category.title}
+
+          .product-create__field
+            label Thương hiệu
+            select.product-create__select(name="brandId")
+              option(value="") -- Chọn thương hiệu --
+              each brand in brands
+                option(value=brand._id selected=brand.id == product.brandId) #{brand.title}
+
+          .product-create__field
+            label Trạng thái
+            select.product-create__select(name="status")
+              option(value="active" selected=product.status == "active") Hoạt động
+              option(value="inactive" selected=product.status == "inactive") Dừng hoạt động
+
+          .product-create__field
+            label Nổi bật
+            select.product-create__select(name="featured")
+              option(value="false" selected=product.featured == false) Không
+              option(value="true" selected=product.featured == true) Có
+
+          .product-create__field
+            label Vị trí
+            input.product-create__input(type="number" name="position" placeholder="Vị trí tự động tăng" min="0" value=product.position)
+
+          .product-create__field
+            label Tags
+            input.product-create__input(
+              type="text"
+              name="tags"
+              placeholder="gaming, laptop, intel... (phân cách bằng dấu phẩy)"
+              value=product.tags ? product.tags.join(", ") : ""
+            )
+
+      //- ── SPECIFICATIONS ──
+      .product-create__section
+        h3.product-create__section-title Thông số kỹ thuật
+
+      .product-create__grid.product-create__grid--3
+        .product-create__card
+          .product-create__field
+            label Màn hình
+            input.product-create__input(
+              type="text"
+              name="specifications[screen]"
+              placeholder='VD: 6.7" AMOLED 120Hz'
+              value=product.specifications.screen
+            )
+          .product-create__field
+            label CPU
+            input.product-create__input(
+              type="text"
+              name="specifications[cpu]"
+              placeholder="VD: Snapdragon 8 Gen 3"
+              value= product.specifications.cpu
+            )
+          .product-create__field
+            label RAM
+            input.product-create__input(
+              type="text"
+              name="specifications[ram]"
+              placeholder="VD: 8GB / 12GB"
+              value= product.specifications.ram
+            )
+
+        .product-create__card
+          .product-create__field
+            label Bộ nhớ
+            input.product-create__input(
+              type="text"
+              name="specifications[storage]"
+              placeholder="VD: 128GB / 256GB"
+              value= product.specifications.storage
+            )
+          .product-create__field
+            label GPU
+            input.product-create__input(
+              type="text"
+              name="specifications[gpu]"
+              placeholder="VD: Adreno 750"
+              value= product.specifications.gpu
+            )
+          .product-create__field
+            label Pin
+            input.product-create__input(
+              type="text"
+              name="specifications[battery]"
+              placeholder="VD: 5000mAh"
+              value= product.specifications.battery
+            )
+
+        .product-create__card
+          .product-create__field
+            label Camera
+            input.product-create__input(
+              type="text"
+              name="specifications[camera]"
+              placeholder="VD: 200MP + 12MP + 10MP"
+              value= product.specifications.camera
+            )
+          .product-create__field
+            label Hệ điều hành
+            input.product-create__input(
+              type="text"
+              name="specifications[os]"
+              placeholder="VD: Android 14"
+              value= product.specifications.os
+            )
+          .product-create__field
+            label Trọng lượng
+            input.product-create__input(
+              type="text"
+              name="specifications[weight]"
+              placeholder="VD: 195g"
+              value= product.specifications.weight
+            )
+
+      //- ── VARIANTS ──
+      .product-create__section
+        h3.product-create__section-title Phiên bản sản phẩm
+
+      button.btn-variant(type="button" id="addVariantBtn")
+        i.fa-solid.fa-plus
+        span Thêm phiên bản
+
+      #variant-container
+        if product.variants && product.variants.length > 0
+          each variant, index in product.variants
+            .variant-item
+
+              .variant-header
+                h4 Phiên bản 
+
+                button.btn-remove-variant(type="button")
+                  i.fa-solid.fa-trash
+
+              .variant-grid
+                input(
+                  type="text"
+                  name=`variants[${index}][color]`
+                  value=variant.color
+                  placeholder="Màu sắc"
+                )
+
+                input(
+                  type="text"
+                  name=`variants[${index}][ram]`
+                  value=variant.ram
+                  placeholder="RAM"
+                )
+
+                input(
+                  type="text"
+                  name=`variants[${index}][storage]`
+                  value=variant.storage
+                  placeholder="Bộ nhớ"
+                )
+
+                input(
+                  type="number"
+                  name=`variants[${index}][price]`
+                  value=variant.price
+                  placeholder="Giá"
+                )
+
+                input(
+                  type="number"
+                  name=`variants[${index}][stock]`
+                  value=variant.stock
+                  placeholder="Số lượng"
+                )
+
+      //- ── SUBMIT ──
+      .product-create__footer
+        button.product-create__btn(type="submit")
+          i.fa-solid.fa-floppy-disk
+          span Cập nhật 
+
+block scripts
+  script(src="/admin/js/product.js")

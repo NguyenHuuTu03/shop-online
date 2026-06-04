@@ -1,0 +1,85 @@
+extends ../../layouts/default
+
+block main
+  .role-container
+
+    //- TOP BAR
+    .role-topbar
+      .role-title
+        span.title-line
+        h2 Quản lý nhóm quyền
+
+      .role-actions
+        form.search-box(method="GET")
+          input(
+            type="text"
+            name="keyword"
+            placeholder="Tìm kiếm nhóm quyền..."
+          )
+          button(type="submit")
+            i.fa-solid.fa-magnifying-glass
+
+        a.btn-add(href=`${prefixAdmin}/roles/create`)
+          i.fa-solid.fa-plus
+          span Thêm nhóm quyền
+
+    //- CONTENT
+    .role-content
+
+      .table-wrapper
+        table.role-table
+
+          thead
+            tr
+              th.col-stt STT
+              th Tên nhóm quyền
+              th Mô tả
+              th.col-permission Số quyền
+              th.col-status Trạng thái
+              th.col-action Hành động
+
+          tbody
+            if roles && roles.length > 0
+              each role, index in roles
+                tr
+
+                  td.text-center #{index + 1}
+
+                  td
+                    .role-name #{role.title}
+
+                  td
+                    .role-desc !{role.description || "Không có mô tả"}
+
+                  td.text-center
+                    span.role-count #{role.permissions ? role.permissions.length : 0}
+
+                  td.text-center
+                    if role.status == "active"
+                      span.status.status--active Hoạt động
+                    else
+                      span.status.status--inactive Dừng hoạt động
+
+                  td
+                    .action-group
+                      a.action-btn.view(
+                        href=`${prefixAdmin}/roles/detail/${role._id}`
+                        title="Chi tiết"
+                      )
+                        i.fa-regular.fa-eye
+
+                      a.action-btn.edit(
+                        href=`${prefixAdmin}/roles/edit/${role._id}`
+                        title="Chỉnh sửa"
+                      )
+                        i.fa-regular.fa-pen-to-square
+
+                      button.action-btn.delete(del-item=role.id)
+                        i.fa-regular.fa-trash-can
+
+            else
+              tr
+                td(colspan="6")
+                  .empty-state Không có nhóm quyền nào
+
+    form(action=prefixAdmin + `/roles/del/`, method="post" form-delete) 

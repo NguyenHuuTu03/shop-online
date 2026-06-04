@@ -1,0 +1,58 @@
+extends ../../layouts/default.pug
+
+block main
+  .role-create
+
+    // ================= TOPBAR =================
+    .role-create__topbar
+      .role-create__title
+        span.title-line
+        h2 Tạo mới nhóm quyền
+
+      a.btn-back(href=`${prefixAdmin}/roles`)
+        i.fa-solid.fa-arrow-left
+        span Danh sách
+
+    // ================= FORM CARD =================
+    .role-create__card
+      form(
+        action=`${prefixAdmin}/roles/create`
+        method="POST"
+      )
+
+        .form-section
+          h3.form-section__title Thông tin nhóm quyền
+
+          .form-group
+            label(for="title")
+              | Tên nhóm quyền
+
+            input.form-control(
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Ví dụ: Quản trị viên"
+              required
+            )
+
+          .form-group
+            label(for="description") Mô tả
+
+            textarea.form-control(
+              id="description"
+              name="description"
+              rows="5"
+              placeholder="Nhập mô tả cho nhóm quyền..."
+            )
+
+          .form-group
+            label(for="status") Trạng thái
+
+            select.form-control(name="status" id="status")
+              option(value="active" selected) Hoạt động
+              option(value="inactive") Dừng hoạt động
+
+        .form-actions
+          button.btn-save(type="submit")
+            i.fa-solid.fa-floppy-disk
+            span Tạo nhóm quyền

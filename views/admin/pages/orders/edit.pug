@@ -1,0 +1,132 @@
+extends ../../layouts/default.pug
+include ../../mixins/moment.pug
+
+block main
+  .order-detail
+
+    // ================= TOPBAR =================
+    .order-detail__topbar
+      .order-detail__title
+        span.title-line
+        h2 Đơn hàng ##{order._id}
+
+      .order-detail__actions
+        a.btn-back(href=`${prefixAdmin}/orders`)
+          i.fa-solid.fa-arrow-left
+          span Quay lại
+
+    // ================= GRID =================
+    .order-detail__grid
+
+      // LEFT COLUMN
+      .order-detail__left
+
+        // ===== CUSTOMER INFO =====
+        .order-detail__card
+          h3.order-detail__card-title Thông tin khách hàng
+
+          .detail-row
+            span.label Họ tên
+            span.value #{order.fullName}
+
+          .detail-row
+            span.label Email
+            span.value #{order.email}
+
+          .detail-row
+            span.label SĐT
+            span.value #{order.phone}
+
+          .detail-row
+            span.label Địa chỉ
+            span.value #{order.address}
+
+        // ===== STATUS =====
+        .order-detail__card
+          h3.order-detail__card-title Trạng thái đơn hàng
+
+          -
+            const statusMap = {
+              PENDING: "Chờ xác nhận",
+              CONFIRMED: "Đã xác nhận",
+              SHIPPING: "Đang giao hàng",
+              COMPLETED: "Đã giao",
+              CANCELED: "Đã hủy",
+              REFUNDED: "Hoàn tiền"
+            };
+
+          .detail-row
+            span.label Trạng thái
+            span.value
+              button.status-badge(class=order.status btn-status-order=order.status data-order=order.id)
+                | #{statusMap[order.status] || order.status}
+
+          .detail-row
+            span.label Ngày đặt
+            span.value
+              +momentDate(order.createdAt)
+
+      // RIGHT COLUMN
+      .order-detail__right
+
+        // ===== PRODUCTS + PAYMENT =====
+        .order-detail__card
+          h3.order-detail__card-title Sản phẩm & thanh toán
+
+          table.order-table
+            thead
+              tr
+                th Ảnh
+                th Sản phẩm
+                th Giá
+                th SL
+                th Thành tiền
+
+            tbody
+              each item in order.products
+                tr
+                  td
+                    if item.productInfo.thumbnail
+                      img.table-img(src=item.productInfo.thumbnail)
+
+                  td #{item.productInfo.title}
+
+                  td #{item.priceNew.toLocaleString()} đ
+
+                  td #{item.quantity}
+
+                  td #{item.totalPrice.toLocaleString()} đ
+          .payment-info
+
+            .detail-row
+              span.label Phương thức thanh toán
+              span.value
+                if order.paymentMethod == "COD"
+                  | Thanh toán khi nhận hàng (COD)
+                else if order.paymentMethod == "MoMo"
+                  | Ví MoMo
+                else if order.paymentMethod == "VNPay"
+                  | VNPay
+                else
+                  | #{order.paymentMethod}
+
+            .detail-row
+              span.label Trạng thái thanh toán
+              span.value
+                span.payment-status(class=order.paymentStatus)
+                  if order.paymentStatus == "PAID"
+                    | Đã thanh toán
+                  else if order.paymentStatus == "UNPAID"
+                    | Chưa thanh toán
+                  else if order.paymentStatus == "REFUNDED"
+                    | Đã hoàn tiền
+                  else
+                    | #{order.paymentStatus}
+          // ===== SUMMARY =====
+          .order-summary
+            .detail-row.detail-row--total
+              span.label Tổng tiền
+              span.value #{order.totalPrice.toLocaleString()} đ
+  
+block scripts 
+  script(src="/admin/js/order.js") 

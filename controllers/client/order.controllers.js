@@ -125,7 +125,7 @@ module.exports.orderPost = async (req, res) => {
         email: req.body.email,
         address: req.body.address,
         paymentMethod: paymentMethod,
-        paymentStatus: "PENDING",
+        paymentStatus: "UNPAID",
         products: products,
         totalPrice: totalPrice,
       };
@@ -145,7 +145,6 @@ module.exports.orderPost = async (req, res) => {
       });
     }
   } else {
-    console.log(req.body);
     let products = [];
     for (const item of req.body.products) {
       const productInfo = await Products.findOne({
@@ -192,7 +191,7 @@ module.exports.orderPost = async (req, res) => {
         email: req.body.email,
         address: req.body.address,
         paymentMethod: paymentMethod,
-        paymentStatus: "PENDING",
+        paymentStatus: "UNPAID",
         products: products,
         totalPrice: totalPrice,
       };

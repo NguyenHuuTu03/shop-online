@@ -1,0 +1,68 @@
+extends ../../layouts/default.pug
+
+block main
+  .my-account
+
+    // ================= TOPBAR =================
+    .my-account__topbar
+      .my-account__title
+        span.title-line
+        h2 Tài khoản của tôi
+
+      .my-account__actions
+        a.btn-back(href=`${prefixAdmin}/dashboard`)
+          i.fa-solid.fa-arrow-left
+          span Dashboard
+
+        a.btn-edit(href=`${prefixAdmin}/my-account/edit`)
+          i.fa-solid.fa-pen
+          span Chỉnh sửa
+
+    // ================= CARD =================
+    .my-account__card
+
+      // ===== HEADER PROFILE =====
+      .account-header
+
+        .account-avatar
+          if user.avatar
+            img(src=user.avatar, alt="avatar")
+          else
+            .avatar-empty
+              i.fa-solid.fa-user
+
+        .account-basic
+          .account-name #{user.fullName}
+          .account-email #{user.email}
+
+          if user.status == "active"
+            .badge.badge-success Hoạt động
+          else
+            .badge.badge-danger Dừng hoạt động
+
+      // ===== INFO GRID =====
+      .account-info
+
+        .info-item
+          .label Họ tên
+          .value #{user.fullName}
+
+        .info-item
+          .label Email
+          .value #{user.email}
+
+        .info-item
+          .label Số điện thoại
+          .value #{user.phone || "Chưa cập nhật"}
+
+        .info-item
+          .label Địa chỉ
+          .value #{user.address || "Chưa cập nhật"}
+
+        .info-item
+          .label Vai trò
+          .value
+            if user.role && user.role.title
+              | #{user.role.title}
+            else
+              | Không có

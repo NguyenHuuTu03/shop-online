@@ -32,3 +32,20 @@ module.exports.filter = (query, products) => {
   }
   return products;
 };
+
+module.exports.filterAdmin = (find, query, objectFilter) => {
+  const sortKey = query.sortKey;
+  const sortValue = query.sortValue;
+  if (sortKey && sortValue) {
+    if (sortKey == "status" || sortKey == "role") {
+      find[sortKey] = sortValue;
+    } else {
+      objectFilter.sort[sortKey] = sortValue;
+    }
+  }
+  const limitQuantity = query.limit;
+  if (limitQuantity) {
+    objectFilter.limit = limitQuantity;
+  }
+  return objectFilter;
+};

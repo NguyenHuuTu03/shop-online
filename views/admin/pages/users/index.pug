@@ -1,0 +1,130 @@
+extends ../../layouts/default
+
+block main
+  .user-container
+
+    //- TOP BAR
+    .user-topbar
+      .user-title
+        span.title-line
+        h2 Quản lý Người dùng
+
+      .user-actions
+        form.search-box(method="GET")
+          input(
+            type="text"
+            name="keyword"
+            placeholder="Tìm kiếm theo tên người dùng..."
+          )
+          button(type="submit")
+            i.fa-solid.fa-magnifying-glass
+
+        a.btn-add(href=`${prefixAdmin}/users/create`)
+          i.fa-solid.fa-plus
+          span Thêm Người dùng
+
+    //- CONTENT
+    .user-content
+
+      //- FILTER
+      .filter-bar
+        select(name="filter").form-filter
+          option(value="all-all") Tất cả người dùng
+          option(value="status-active") Hoạt động
+          option(value="status-inactive") Dừng hoạt động
+          option(value="role-admin") Admin
+          option(value="role-user") User
+          option(value="fullName-asc") Tên A → Z
+          option(value="fullName-desc") Tên Z → A
+
+        select(name="limit").form-filter-limit
+          option(value="10") 10 người dùng
+          option(value="15") 15 người dùng
+          option(value="20") 20 người dùng
+
+      //- TABLE
+      .table-wrapper
+        table.user-table
+          thead
+            tr
+              th.col-checkbox
+                input(type="checkbox" id="check-all")
+
+              th.col-stt STT
+              th.col-image Ảnh
+              th Họ tên
+              th Email
+              th.col-role Vai trò
+              th.col-status Trạng thái
+              th.col-action Hành động
+          if(users.length > 0)
+            tbody
+              each user, index in users
+                tr
+                  td
+                    input(type="checkbox" value=user._id class="check-item")
+
+                  td.text-center #{index + 1}
+
+                  td
+                    .img-box
+                      img.user-image(
+                        src=user.avatar
+                        alt=user.fullName
+                      )
+
+                  td
+                    .user-name #{user.fullName}
+
+                  td
+                    span.user-email #{user.email}
+
+                  td.text-center
+                    span.user-role #{user.role? user.role.title : "User"}
+
+                  td.col-status
+                    if user.status == "active"
+                      span.status-active Hoạt động
+                    else
+                      span.status-inactive Dừng hoạt động
+
+                  td.col-action
+                    .action-group
+                      a.action-btn.view(
+                        href=`${prefixAdmin}/users/detail/${user._id}`
+                        title="Chi tiết"
+                      )
+                        i.fa-regular.fa-eye
+
+                      a.action-btn.edit(
+                        href=`${prefixAdmin}/users/edit/${user._id}`
+                        title="Chỉnh sửa"
+                      )
+                        i.fa-regular.fa-pen-to-square
+
+                      button.action-btn.delete(del-item=user.id)
+                        i.fa-regular.fa-trash-can
+          else 
+            tr
+              td(colspan="9")
+                .empty-state Không có người dùng nào
+
+      //- PAGINATION
+      nav.pagination-wrapper
+        ul.pagination
+          if currentPage > 1
+            li.page-item
+              a.page-link(href=`?page=${currentPage - 1}`) Previous
+
+          - var startPage = Math.max(1, currentPage - 1)
+          - var endPage = Math.min(totalPage, currentPage + 1)
+
+          - for (let i = startPage; i <= endPage; i++)
+            li.page-item(class=(currentPage == i ? "active" : ""))
+              a.page-link(href=`?page=${i}`) #{i}
+
+          if currentPage < totalPage
+            li.page-item
+              a.page-link(href=`?page=${currentPage + 1}`) Next
+
+    form(action=prefixAdmin + `/users/del/`, method="post" form-delete) 

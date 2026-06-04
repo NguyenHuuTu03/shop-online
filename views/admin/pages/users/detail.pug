@@ -1,0 +1,77 @@
+extends ../../layouts/default.pug
+include ../../mixins/moment.pug
+
+block main
+  .user-detail
+
+    // ================= TOPBAR =================
+    .user-detail__topbar
+      .user-detail__title
+        span.user-detail__line
+        h2 Chi tiết người dùng
+
+      a.btn-back(href=`${prefixAdmin}/users`)
+        i.fa-solid.fa-arrow-left
+        span Danh sách
+
+    // ================= CARD =================
+    .user-detail__card
+
+      // ================= HEADER =================
+      .user-detail__header
+
+        .user-detail__avatar
+          if userDetail.avatar
+            img(src=userDetail.avatar, alt=userDetail.fullName)
+          else
+            img(src="/images/default-avatar.png", alt="avatar")
+
+        .user-detail__info
+          h3.user-detail__name= userDetail.fullName
+          p.user-detail__email= userDetail.email
+
+          .user-detail__badges
+            span.badge.badge--admin #{userDetail.role? userDetail.role.title : "User"}
+
+            if userDetail.status == "active"
+              span.badge.badge--active Hoạt động
+            else
+              span.badge.badge--inactive Dừng hoạt động
+
+      // ================= BODY =================
+      .user-detail__body
+
+        .user-detail__grid
+
+          .user-detail__item
+            span.user-detail__label Họ và tên
+            span.user-detail__value= userDetail.fullName
+
+          .user-detail__item
+            span.user-detail__label Email
+            span.user-detail__value= userDetail.email
+
+          .user-detail__item
+            span.user-detail__label Số điện thoại
+            span.user-detail__value= userDetail.phone || "Chưa cập nhật"
+
+          .user-detail__item
+            span.user-detail__label Địa chỉ
+            span.user-detail__value= userDetail.address || "Chưa cập nhật"
+
+          .user-detail__item
+            span.user-detail__label Vai trò
+            span.user-detail__value #{userDetail.role? userDetail.role.title : "User"}
+
+          .user-detail__item
+            span.user-detail__label Trạng thái
+            span.user-detail__value
+              if userDetail.status == "active"
+                | Hoạt động
+              else
+                | Dừng hoạt động
+
+          .user-detail__item
+            span.user-detail__label Ngày tạo
+            span.user-detail__value
+              +momentDate(userDetail.createdAt)

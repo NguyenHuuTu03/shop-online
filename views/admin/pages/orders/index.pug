@@ -1,0 +1,155 @@
+extends ../../layouts/default
+include ../../mixins/moment
+
+block main
+  .order-container
+
+    //- TOP BAR
+    .order-topbar
+      .order-title
+        span.title-line
+        h2 Quản lý đơn hàng
+
+      .order-actions
+        form.search-box(method="GET")
+          input(
+            type="text"
+            name="keyword"
+            placeholder="Tìm kiếm theo tên / SĐT..."
+          )
+          button(type="submit")
+            i.fa-solid.fa-magnifying-glass
+
+    //- CONTENT
+    .order-content
+
+      //- FILTER
+      .filter-bar
+
+        select(name="status").form-filter
+          option(value="all-all") Tất cả trạng thái
+          option(value="status-PENDING") Chờ xác nhận
+          option(value="status-CONFIRMED") Đã xác nhận
+          option(value="status-SHIPPING") Đang giao
+          option(value="status-DELIVERED") Đã giao
+          option(value="status-CANCELED") Đã huỷ
+          option(value="paymentStatus-PAID") Đã thanh toán
+          option(value="paymentStatus-UNPAID") Chưa thanh toán
+          option(value="paymentStatus-FAILED") Thanh toán lỗi
+
+        select(name="limit").form-filter-limit
+          option(value="10") 10 đơn hàng
+          option(value="15") 15 đơn hàng
+          option(value="20") 20 đơn hàng
+
+      //- TABLE
+      .table-wrapper
+        table.order-table
+
+          thead
+            tr
+              th.col-checkbox
+                input(type="checkbox" id="check-all")
+
+              th.col-stt STT
+              th Người đặt
+              th SĐT
+              th Ngày đặt
+              th.col-total.text-center Tổng tiền
+              th.col-status Trạng thái
+              th.col-payment Thanh toán
+              th.col-action Hành động
+
+          tbody
+            if orders && orders.length > 0
+              each order, index in orders
+                tr
+
+                  td
+                    input(type="checkbox" value=order._id class="check-item")
+
+                  td.text-center #{index + 1}
+
+                  td
+                    .order-name #{order.fullName}
+
+                  td
+                    .order-phone #{order.phone}
+
+                  td
+                    .order-date
+                      +momentDate(order.createdAt)
+
+                  td.text-center
+                    strong #{order.totalPrice.toLocaleString()}đ
+
+                  //- STATUS ORDER
+                  td.col-status(btn-status-order=order.status data-order=order.id)
+                    if order.status == "PENDING"
+                      button.status.status--pending Chờ xác nhận
+                    else if order.status == "CONFIRMED"
+                      button.status.status--confirmed Đã xác nhận
+                    else if order.status == "SHIPPING"
+                      button.status.status--shipping Đang giao
+                    else if order.status == "COMPLETED"
+                      button.status.status--delivered Đã giao
+                    else if order.status == "CANCELED"
+                      button.status.status--canceled Đã huỷ
+
+                  //- PAYMENT STATUS
+                  td.col-payment
+                    if order.paymentStatus == "PAID"
+                      span.status.status--paid Đã thanh toán
+                    else if (order.paymentStatus == "UNPAID" || order.paymentStatus == "PENDING")
+                      span.status.status--unpaid Chưa thanh toán
+                    else if order.paymentStatus == "FAILED"
+                      span.status.status--failed Thanh toán lỗi
+
+                  //- ACTION
+                  td.col-action
+                    .action-group
+
+                      a.action-btn.view(
+                        href=`${prefixAdmin}/orders/detail/${order._id}`
+                        title="Chi tiết"
+                      )
+                        i.fa-regular.fa-eye
+
+                      a.action-btn.edit(
+                        href=`${prefixAdmin}/orders/edit/${order._id}`
+                        title="Cập nhật"
+                      )
+                        i.fa-regular.fa-pen-to-square
+
+                      //- a.action-btn.delete(
+                      //-   href=`${prefixAdmin}/orders/delete/${order._id}`
+                      //-   title="Xóa"
+                      //- )
+                      //-   i.fa-regular.fa-trash-can
+
+            else
+              tr
+                td(colspan="9")
+                  .empty-state Không có đơn hàng nào
+
+    //- PAGINATION
+    nav.pagination-wrapper
+      ul.pagination
+
+        if currentPage > 1
+          li.page-item
+            a.page-link(href=`?page=${currentPage - 1}`) Previous
+
+        - var startPage = Math.max(1, currentPage - 2)
+        - var endPage = Math.min(totalPage, currentPage + 2)
+
+        - for (let i = startPage; i <= endPage; i++)
+          li.page-item(class=(currentPage == i ? "active" : ""))
+            a.page-link(href=`?page=${i}`) #{i}
+
+        if currentPage < totalPage
+          li.page-item
+            a.page-link(href=`?page=${currentPage + 1}`) Next
+
+block scripts 
+  script(src="/admin/js/order.js") 

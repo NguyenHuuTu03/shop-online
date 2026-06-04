@@ -1,0 +1,70 @@
+extends ../../layouts/default.pug
+include ../../mixins/moment
+
+block main
+  .category-detail
+
+    // ================= TOPBAR =================
+    .category-topbar
+      .category-title
+        span.title-line
+        h2 Chi tiết danh mục
+
+      .category-actions
+        a.btn-back(href=`${prefixAdmin}/categories`)
+          i.fa-solid.fa-arrow-left
+          span Danh sách
+
+    // ================= CONTENT =================
+    .category-content
+
+      .category-detail__grid
+
+        // ===== LEFT CARD: IMAGE =====
+        .card
+          h3.card-title Ảnh danh mục
+
+          if category.thumbnail
+            .img-box(style="width:100%; height:220px")
+              img.category-image(
+                src=category.thumbnail,
+                alt=category.title
+              )
+          else
+            .empty-box Chưa có ảnh
+
+        // ===== RIGHT CARD: INFO =====
+        .card
+          h3.card-title Thông tin danh mục
+
+          .detail-row
+            span.label Tên danh mục
+            span.value #{category.title}
+
+          .detail-row
+            span.label Slug
+            span.value #{category.slug}
+
+          .detail-row
+            span.label Mô tả
+            span.value !{category.description || "Không có mô tả"}
+
+          .detail-row
+            span.label Danh mục cha
+            span.value #{category.parent.title || "Không có"}
+
+          .detail-row
+            span.label Vị trí
+            span.value #{category.position || 0}
+
+          .detail-row
+            span.label Trạng thái
+            if category.status === "active"
+              span.status-active Hoạt động
+            else
+              span.status-inactive Dừng hoạt động
+
+          .detail-row
+            span.label Ngày tạo
+            span.value 
+              +momentDate(category.createdAt)

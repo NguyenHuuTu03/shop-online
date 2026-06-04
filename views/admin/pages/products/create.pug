@@ -1,0 +1,206 @@
+extends ../../layouts/default.pug
+
+block main
+  .product-create
+
+    //- ================= TOPBAR =================
+    .product-create__topbar
+      .product-create__title
+        span.title-line
+        h2 #{pageTitle}
+      .product-create__actions
+        a.btn-back(href=`${prefixAdmin}/products`)
+          i.fa-solid.fa-arrow-left
+          span Danh sách
+
+    //- ================= FORM =================
+    form.product-create__form(
+      action=`${prefixAdmin}/products/create`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+
+      //- ── BASIC INFO ──
+      .product-create__grid
+        .product-create__card
+          h3.product-create__card-title Thông tin cơ bản
+
+          .product-create__field
+            label Tên sản phẩm
+            input.product-create__input(type="text" name="title" placeholder="Tên sản phẩm...")
+
+          .product-create__field
+            label Giá (VNĐ)
+            input.product-create__input(type="number" name="price" placeholder="0" min="0")
+
+          .product-create__field
+            label Giảm giá (%)
+            input.product-create__input(type="number" name="discount" placeholder="0" min="0" max="100")
+
+          .product-create__field
+            label Mô tả
+            textarea.product-create__textarea(name="description" placeholder="Mô tả ngắn về sản phẩm...")
+
+          .product-create__field
+            label Bảo hành
+            textarea.product-create__textarea(name="warranty" placeholder="VD: 12 tháng chính hãng...")
+
+          .product-create__field
+            label Thông tin vận chuyển
+            textarea.product-create__textarea(name="shippingInfo" placeholder="VD: Miễn phí vận chuyển đơn trên 500k...")
+
+        //- ── RIGHT COLUMN ──
+        .product-create__card
+          h3.product-create__card-title Phân loại & Trạng thái
+
+          .product-create__field
+            label Thumbnail
+            input.product-create__input#thumbnailInput(
+              type="file"
+              name="thumbnail"
+              accept="image/*"
+              btn-thumb
+            )
+            img#thumbnailPreview.preview-img(src="" alt="" style="display:none")
+
+          .product-create__field
+            label Ảnh sản phẩm
+            input.product-create__input(
+              type="file"
+              name="images"
+              multiple
+              accept="image/*"
+              btn-image
+            )
+            .images-preview#imagesPreview
+
+          .product-create__field
+            label Danh mục
+            select.product-create__select(name="categoryId")
+              option(value="") -- Chọn danh mục --
+              each category in categories
+                option(value=category._id) #{category.title}
+
+          .product-create__field
+            label Thương hiệu
+            select.product-create__select(name="brandId")
+              option(value="") -- Chọn thương hiệu --
+              each brand in brands
+                option(value=brand._id) #{brand.title}
+
+          .product-create__field
+            label Trạng thái
+            select.product-create__select(name="status")
+              option(value="active") Hoạt động
+              option(value="inactive") Dừng hoạt động
+
+          .product-create__field
+            label Nổi bật
+            select.product-create__select(name="featured")
+              option(value="false") Không
+              option(value="true") Có
+
+          .product-create__field
+            label Vị trí
+            input.product-create__input(type="number" name="position" placeholder="Vị trí tự động tăng" min="0" )
+
+          .product-create__field
+            label Tags
+            input.product-create__input(
+              type="text"
+              name="tags"
+              placeholder="gaming, laptop, intel... (phân cách bằng dấu phẩy)"
+            )
+
+      //- ── SPECIFICATIONS ──
+      .product-create__section
+        h3.product-create__section-title Thông số kỹ thuật
+
+      .product-create__grid.product-create__grid--3
+        .product-create__card
+          .product-create__field
+            label Màn hình
+            input.product-create__input(
+              type="text"
+              name="specifications[screen]"
+              placeholder='VD: 6.7" AMOLED 120Hz'
+            )
+          .product-create__field
+            label CPU
+            input.product-create__input(
+              type="text"
+              name="specifications[cpu]"
+              placeholder="VD: Snapdragon 8 Gen 3"
+            )
+          .product-create__field
+            label RAM
+            input.product-create__input(
+              type="text"
+              name="specifications[ram]"
+              placeholder="VD: 8GB / 12GB"
+            )
+
+        .product-create__card
+          .product-create__field
+            label Bộ nhớ
+            input.product-create__input(
+              type="text"
+              name="specifications[storage]"
+              placeholder="VD: 128GB / 256GB"
+            )
+          .product-create__field
+            label GPU
+            input.product-create__input(
+              type="text"
+              name="specifications[gpu]"
+              placeholder="VD: Adreno 750"
+            )
+          .product-create__field
+            label Pin
+            input.product-create__input(
+              type="text"
+              name="specifications[battery]"
+              placeholder="VD: 5000mAh"
+            )
+
+        .product-create__card
+          .product-create__field
+            label Camera
+            input.product-create__input(
+              type="text"
+              name="specifications[camera]"
+              placeholder="VD: 200MP + 12MP + 10MP"
+            )
+          .product-create__field
+            label Hệ điều hành
+            input.product-create__input(
+              type="text"
+              name="specifications[os]"
+              placeholder="VD: Android 14"
+            )
+          .product-create__field
+            label Trọng lượng
+            input.product-create__input(
+              type="text"
+              name="specifications[weight]"
+              placeholder="VD: 195g"
+            )
+
+      //- ── VARIANTS ──
+      .product-create__section
+        h3.product-create__section-title Phiên bản sản phẩm
+
+      button.btn-variant(type="button" id="addVariantBtn")
+        i.fa-solid.fa-plus
+        span Thêm phiên bản
+
+      #variant-container
+
+      //- ── SUBMIT ──
+      .product-create__footer
+        button.product-create__btn(type="submit")
+          i.fa-solid.fa-plus
+          span Tạo mới sản phẩm
+
+block scripts
+  script(src="/admin/js/product.js")

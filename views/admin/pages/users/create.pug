@@ -1,0 +1,111 @@
+extends ../../layouts/default.pug
+
+block main
+  .user-create
+
+    // ================= TOPBAR =================
+    .user-create__topbar
+      .user-create__title
+        span.title-line
+        h2 Thêm người dùng mới
+
+      .user-create__actions
+        a.btn-back(href=`${prefixAdmin}/users`)
+          i.fa-solid.fa-arrow-left
+          span Danh sách
+
+    // ================= CARD =================
+    .user-create__card
+
+      form.user-create__form(
+        action=`${prefixAdmin}/users/create`
+        method="POST"
+        enctype="multipart/form-data"
+      )
+
+        .form-grid
+
+          // ===== FULL NAME =====
+          .form-group
+            label Họ và tên
+            input.form-control(
+              type="text"
+              name="fullName"
+              placeholder="Nhập họ và tên"
+              required
+            )
+
+          // ===== EMAIL =====
+          .form-group
+            label Email
+            input.form-control(
+              type="email"
+              name="email"
+              placeholder="Nhập email"
+              required
+            )
+
+          // ===== PASSWORD =====
+          .form-group
+            label Mật khẩu
+            input.form-control(
+              type="password"
+              name="password"
+              placeholder="Nhập mật khẩu"
+              required
+            )
+
+          // ===== PHONE =====
+          .form-group
+            label Số điện thoại
+            input.form-control(
+              type="text"
+              name="phone"
+              placeholder="Nhập số điện thoại"
+            )
+
+          // ===== ADDRESS =====
+          .form-group.form-group--full
+            label Địa chỉ
+            input.form-control(
+              type="text"
+              name="address"
+              placeholder="Nhập địa chỉ"
+            )
+
+          // ===== AVATAR =====
+          .form-group
+            label Avatar
+
+            .upload-box
+              input(
+                type="file"
+                name="avatar"
+                accept="image/*"
+                id="avatarInput"
+                btn-thumb
+              )
+
+              .thumbnail-preview
+                img#thumbnailPreview(src="", alt="" style="display:none")
+
+          // ===== ROLE =====
+          .form-group
+            label Vai trò
+            select.form-control(name="role")
+              option(value="") -- Vai trò --
+              each role in roles
+                option(value=role.id) #{role.title}
+
+          // ===== STATUS =====
+          .form-group
+            label Trạng thái
+            select.form-control(name="status")
+              option(value="active" selected) Hoạt động
+              option(value="inactive") Dừng hoạt động
+
+        // ================= ACTIONS =================
+        .form-actions
+          button.btn-submit(type="submit")
+            i.fa-solid.fa-plus
+            span Tạo người dùng

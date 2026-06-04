@@ -17,7 +17,7 @@ const orderSchema = mongoose.Schema(
     totalPrice: Number,
   },
   {
-    timestamp: true,
+    timestamps: true,
   },
 );
 const Order = mongoose.model("Order", orderSchema, "orders");

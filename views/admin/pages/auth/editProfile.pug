@@ -1,0 +1,116 @@
+extends ../../layouts/default.pug
+
+block main
+  .my-account
+
+    // ================= TOPBAR =================
+    .my-account__topbar
+      .my-account__title
+        span.title-line
+        h2 Chỉnh sửa tài khoản
+
+      .my-account__actions
+        a.btn-back(href=`${prefixAdmin}/my-account`)
+          i.fa-solid.fa-arrow-left
+          span Trở lại
+
+    // ================= CONTENT =================
+    .my-account__content
+      .my-account__card
+
+        form.my-account__form(
+          action=`${prefixAdmin}/my-account/edit?_method=PATCH`
+          method="POST"
+          enctype="multipart/form-data"
+        )
+
+          .form-grid
+
+            // ===== HỌ TÊN =====
+            .form-group
+              label Họ và tên
+              input.form-control(
+                type="text"
+                name="fullName"
+                value=user.fullName
+                required
+              )
+
+            // ===== EMAIL =====
+            .form-group
+              label Email
+              input.form-control(
+                type="email"
+                name="email"
+                value=user.email
+                required
+              )
+
+            // ===== MẬT KHẨU =====
+            .form-group
+              label Mật khẩu mới
+              input.form-control(
+                type="password"
+                name="password"
+                placeholder="Để trống nếu không đổi mật khẩu"
+              )
+
+            // ===== SỐ ĐIỆN THOẠI =====
+            .form-group
+              label Số điện thoại
+              input.form-control(
+                type="text"
+                name="phone"
+                value=user.phone
+              )
+
+            // ===== ĐỊA CHỈ =====
+            .form-group.form-group--full
+              label Địa chỉ
+              input.form-control(
+                type="text"
+                name="address"
+                value=user.address
+              )
+
+            // ===== AVATAR =====
+            .form-group
+              label Avatar
+
+              .upload-box
+                input#avatarInput(
+                  type="file"
+                  name="avatar"
+                  accept="image/*"
+                  btn-thumb
+                )
+
+                .upload-preview
+                  if user.avatar
+                    img#thumbnailPreview(src=user.avatar, alt="avatar", style="display:block")
+                  else
+                    img#thumbnailPreview
+
+            // ===== VAI TRÒ =====
+            .form-group
+              label Vai trò
+              select.form-control(name="roleId")
+                option(value="") -- Chọn vai trò --
+                each role in roles
+                  option(
+                    value=role._id
+                    selected= user.roleId && role._id.toString() === user.roleId.toString()
+                  ) #{role.title}
+
+            // ===== TRẠNG THÁI =====
+            .form-group
+              label Trạng thái
+              select.form-control(name="status")
+                option(value="active" selected=user.status=="active") Hoạt động
+                option(value="inactive" selected=user.status=="inactive") Tạm khóa
+
+          // ================= ACTIONS =================
+          .form-actions
+            button.btn-submit(type="submit")
+              i.fa-solid.fa-floppy-disk
+              span Cập nhật thông tin

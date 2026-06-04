@@ -1,0 +1,202 @@
+extends ../../layouts/default.pug
+
+block main
+  .permission-container
+    div(data-role = roles)
+
+    // ================= TOP BAR =================
+    .permission-topbar
+      .permission-title
+        span.title-line
+        h2 Phân quyền hệ thống
+
+      .permission-actions
+        a.btn-back(href=`${prefixAdmin}/roles`)
+          i.fa-solid.fa-arrow-left
+          span Danh sách nhóm quyền
+
+        button.btn-save(type="submit" permission-submit)
+          i.fa-solid.fa-floppy-disk
+          span Lưu phân quyền
+
+    // ================= CONTENT =================
+    .permission-content
+
+      #permission-form
+
+        .table-wrapper
+          table.permission-table
+
+            thead
+              tr
+                th Chức năng
+                  each role in roles
+                    th.text-center #{role.title}
+
+            tbody
+
+              // ================= CATEGORY =================
+              tr(data-name="id" class="d-none")
+                td
+                each role in roles 
+                  td.text-center
+                    input(type="text" value=role.id)
+
+              tr.section-row
+                td(colspan=`${roles.length + 1}`) 
+                  i.fa-solid.fa-folder-tree
+                  span  Danh mục sản phẩm
+
+              tr(data-name="category_view")
+                td Xem
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+                
+
+              tr(data-name="category_create")
+                td Thêm
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="category_edit")
+                td Sửa
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="category_delete")
+                td Xóa
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+
+              // ================= PRODUCT =================
+              tr.section-row
+                td(colspan=`${roles.length + 1}`)
+                  i.fa-solid.fa-box-open
+                  span  Sản phẩm
+
+              tr(data-name="product_view")
+                td Xem
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="product_create")
+                td Thêm
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="product_edit")
+                td Sửa
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="product_delete")
+                td Xóa
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+
+              // ================= ORDER =================
+              tr.section-row
+                td(colspan=`${roles.length + 1}`) 
+                  i.fa-solid.fa-cart-shopping
+                  span  Đơn hàng
+
+              tr(data-name="order_view")
+                td Xem
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="order_edit")
+                td Cập nhật
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="order_delete")
+                td Xóa
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+
+              // ================= ROLE =================
+              tr.section-row
+                td(colspan=`${roles.length + 1}`) 
+                  i.fa-solid.fa-user-shield
+                  span  Nhóm quyền
+
+              tr(data-name="role_view")
+                td Xem
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+              tr(data-name="role_create")
+                td Thêm
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+                  
+              tr(data-name="role_edit")
+                td Sửa
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="role_delete")
+                td Xoá
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="role_permissions")
+                td Phân quyền
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+
+              // ================= USER =================
+              tr.section-row
+                td(colspan=`${roles.length + 1}`) 
+                  i.fa-solid.fa-users
+                  span  Người dùng
+
+              tr(data-name="user_view")
+                td Xem
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="user_create")
+                td Thêm
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="user_edit")
+                td Sửa
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="user_delete")
+                td Xóa
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+        // hidden field
+        input(type="hidden" name="permission" value="")
+
+block scripts 
+  script(src="/admin/js/role.js") 

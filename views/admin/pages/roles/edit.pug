@@ -1,0 +1,198 @@
+extends ../../layouts/default.pug
+
+block main
+  .role-edit
+
+    .role-edit__topbar
+
+      .role-edit__title
+        span.title-line
+        h2 Chỉnh sửa nhóm quyền
+
+      .role-edit__actions
+
+        button.btn-save(
+          type="submit"
+          form="form-edit-role"
+        )
+          i.fa-solid.fa-floppy-disk
+          span Lưu thay đổi
+
+        a.btn-back(
+          href=`${prefixAdmin}/roles`
+        )
+          i.fa-solid.fa-arrow-left
+          span Danh sách
+
+    form#form-edit-role(
+      action=`${prefixAdmin}/roles/edit/${role._id}?_method=PATCH`
+      method="POST"
+    )
+
+      .role-edit__card
+
+        .card-title
+          i.fa-solid.fa-user-shield
+          span Thông tin nhóm quyền
+
+        .form-group
+          label Tên nhóm quyền
+
+          input.form-control(
+            type="text"
+            name="title"
+            value=role.title
+            required
+          )
+
+        .form-group
+          label Trạng thái
+
+          select.form-control(name="status")
+
+            option(
+              value="active"
+              selected=role.status=="active"
+            ) Hoạt động
+
+            option(
+              value="inactive"
+              selected=role.status=="inactive"
+            ) Dừng hoạt động
+
+        .form-group
+          label Mô tả
+
+          textarea.form-control(
+            rows="6"
+            name="description"
+          ) !{role.description }
+    // ================= PERMISSIONS =================
+    .role-detail__card
+
+      .section-title
+        i.fa-solid.fa-key
+        span Quyền được cấp
+
+      if role.permissions && role.permissions.length > 0
+
+        .permission-groups
+
+          // DANH MỤC
+          .permission-group
+            .permission-group__header
+              i.fa-solid.fa-folder-tree
+              span Danh mục sản phẩm
+
+            .permission-list
+
+              if role.permissions.includes("category_view")
+                span.permission-badge Xem
+
+              if role.permissions.includes("category_create")
+                span.permission-badge Thêm
+
+              if role.permissions.includes("category_edit")
+                span.permission-badge Sửa
+
+              if role.permissions.includes("category_delete")
+                span.permission-badge Xóa
+
+          // SẢN PHẨM
+          .permission-group
+            .permission-group__header
+              i.fa-solid.fa-box
+              span Sản phẩm
+
+            .permission-list
+
+              if role.permissions.includes("product_view")
+                span.permission-badge Xem
+
+              if role.permissions.includes("product_create")
+                span.permission-badge Thêm
+
+              if role.permissions.includes("product_edit")
+                span.permission-badge Sửa
+
+              if role.permissions.includes("product_delete")
+                span.permission-badge Xóa
+
+          // ĐƠN HÀNG
+          .permission-group
+            .permission-group__header
+              i.fa-solid.fa-cart-shopping
+              span Đơn hàng
+
+            .permission-list
+
+              if role.permissions.includes("order_view")
+                span.permission-badge Xem
+
+              if role.permissions.includes("order_edit")
+                span.permission-badge Cập nhật
+
+              if role.permissions.includes("order_delete")
+                span.permission-badge Xóa
+
+          // NHÓM QUYỀN
+          .permission-group
+            .permission-group__header
+              i.fa-solid.fa-user-shield
+              span Nhóm quyền
+
+            .permission-list
+
+              if role.permissions.includes("role_view")
+                span.permission-badge Xem
+
+              if role.permissions.includes("role_permissions")
+                span.permission-badge Phân quyền
+
+          // NGƯỜI DÙNG
+          .permission-group
+            .permission-group__header
+              i.fa-solid.fa-users
+              span Người dùng
+
+            .permission-list
+
+              if role.permissions.includes("user_view")
+                span.permission-badge Xem
+
+              if role.permissions.includes("user_create")
+                span.permission-badge Thêm
+
+              if role.permissions.includes("user_edit")
+                span.permission-badge Sửa
+
+              if role.permissions.includes("user_delete")
+                span.permission-badge Xóa
+          // NHÓM QUYỀN
+          .permission-group
+            .permission-group__header
+              i.fa-solid.fa-user-shield
+              span Nhóm quyền
+
+            .permission-list
+
+              if role.permissions.includes("role_view")
+                span.permission-badge Xem
+
+              if role.permissions.includes("role_create")
+                span.permission-badge Thêm
+
+              if role.permissions.includes("role_edit")
+                span.permission-badge Sửa
+
+              if role.permissions.includes("role_delete")
+                span.permission-badge Xóa
+
+              if role.permissions.includes("role_permissions")
+                span.permission-badge Phân quyền
+      else
+
+        .empty-state
+          i.fa-solid.fa-shield-halved
+          h4 Chưa được cấp quyền
+          p Nhóm quyền này hiện chưa có quyền truy cập nào.

@@ -1,0 +1,172 @@
+extends ../../layouts/default.pug
+
+block main
+  .product-detail
+
+    .product-detail__topbar
+      .product-detail__title
+        span.title-line
+        h2 #{product.title}
+
+      .product-detail__actions
+        a.btn-back(href=`${prefixAdmin}/products`)
+          i.fa-solid.fa-arrow-left
+          span Quay lại
+
+    .product-detail__grid
+
+      // LEFT
+      .product-detail__left
+
+        .product-detail__card
+          h3.product-detail__card-title Ảnh đại diện
+
+          img.product-thumbnail(
+            src=product.thumbnail
+            alt=product.title
+          )
+
+        if product.images && product.images.length > 0
+          .product-detail__card
+            h3.product-detail__card-title Thư viện ảnh
+
+            .product-gallery
+              each image in product.images
+                img.product-gallery__item(
+                  src=image
+                  alt=product.title
+                )
+
+      // RIGHT
+      .product-detail__right
+
+        .product-detail__card
+          h3.product-detail__card-title Thông tin cơ bản
+
+          .detail-row
+            span.label Tên sản phẩm
+            span.value #{product.title}
+
+          .detail-row
+            span.label Giá
+            span.value
+              | #{product.price.toLocaleString()} VNĐ
+
+          .detail-row
+            span.label Giảm giá
+            span.value #{product.discount}%
+
+          .detail-row
+            span.label Trạng thái
+            span.value #{product.status}
+
+          .detail-row
+            span.label Nổi bật
+            span.value #{product.featured ? "Có" : "Không"}
+
+          .detail-row
+            span.label Vị trí
+            span.value #{product.position}
+
+        .product-detail__card
+          h3.product-detail__card-title Danh mục
+
+          .detail-row
+            span.label Danh mục
+            span.value #{product.category.title}
+
+          .detail-row
+            span.label Thương hiệu
+            span.value #{product.brand.title}
+
+    // DESCRIPTION
+    .product-detail__card
+      h3.product-detail__card-title Mô tả
+
+      p #{product.description}
+
+    // WARRANTY
+    .product-detail__card
+      h3.product-detail__card-title Bảo hành
+
+      p #{product.warranty}
+
+    // SHIPPING
+    .product-detail__card
+      h3.product-detail__card-title Vận chuyển
+
+      p #{product.shippingInfo}
+
+    // SPECIFICATIONS
+    .product-detail__card
+      h3.product-detail__card-title Thông số kỹ thuật
+
+      table.spec-table
+        tbody
+          tr
+            td Màn hình
+            td #{product.specifications.screen}
+
+          tr
+            td CPU
+            td #{product.specifications.cpu}
+
+          tr
+            td RAM
+            td #{product.specifications.ram}
+
+          tr
+            td Bộ nhớ
+            td #{product.specifications.storage}
+
+          tr
+            td GPU
+            td #{product.specifications.gpu}
+
+          tr
+            td Pin
+            td #{product.specifications.battery}
+
+          tr
+            td Camera
+            td #{product.specifications.camera}
+
+          tr
+            td Hệ điều hành
+            td #{product.specifications.os}
+
+          tr
+            td Trọng lượng
+            td #{product.specifications.weight}
+
+    // VARIANTS
+    if product.variants && product.variants.length > 0
+      .product-detail__card
+        h3.product-detail__card-title Phiên bản sản phẩm
+
+        table.variant-table
+          thead
+            tr
+              th Màu
+              th RAM
+              th Bộ nhớ
+              th Giá
+              th Tồn kho
+
+          tbody
+            each item in product.variants
+              tr
+                td #{item.color}
+                td #{item.ram}
+                td #{item.storage}
+                td #{item.price.toLocaleString()} VNĐ
+                td #{item.stock}
+
+    // TAGS
+    if product.tags && product.tags.length > 0
+      .product-detail__card
+        h3.product-detail__card-title Tags
+
+        .tag-list
+          each tag in product.tags
+            span.tag-item #{tag}

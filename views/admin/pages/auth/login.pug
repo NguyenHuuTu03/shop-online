@@ -1,0 +1,70 @@
+extends ../../layouts/auth
+
+block main
+  .auth-page
+
+    .auth-card
+
+      // LEFT
+      .auth-card__left
+        .auth-brand
+
+          .auth-brand__icon
+            i.fa-solid.fa-shield-halved
+
+          h1 Laptop Admin
+
+          p
+            | Hệ thống quản trị website bán laptop
+
+      // RIGHT
+      .auth-card__right
+
+        .auth-header
+          h2 Đăng nhập
+          p Vui lòng đăng nhập để tiếp tục
+
+        form.auth-form(
+          action=`${prefixAdmin}/auth/login`
+          method="POST"
+        )
+
+          .form-group
+            label Email
+
+            .form-input
+              i.fa-solid.fa-envelope
+
+              input(
+                type="email"
+                name="email"
+                placeholder="Nhập email"
+                required
+              )
+
+          .form-group
+            label Mật khẩu
+
+            .form-input
+              i.fa-solid.fa-lock
+
+              input(
+                type="password"
+                name="password"
+                placeholder="Nhập mật khẩu"
+                required
+              )
+
+          .form-options
+
+            label.remember
+              input(type="checkbox")
+              span Ghi nhớ đăng nhập
+
+            a.forgot-password(href="#")
+              i.fa-solid.fa-key
+              span Quên mật khẩu
+
+          button.btn-login(type="submit")
+            i.fa-solid.fa-right-to-bracket
+            span Đăng nhập

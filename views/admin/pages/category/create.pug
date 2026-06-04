@@ -1,0 +1,89 @@
+extends ../../layouts/default.pug
+
+block main
+  .category-create
+
+    // ================= TOPBAR =================
+    .category-create__topbar
+      .category-create__title
+        span.title-line
+        h2 Thêm danh mục mới
+
+      .category-create__actions
+        a.btn-back(href=`${prefixAdmin}/categories`)
+          i.fa-solid.fa-arrow-left
+          span Danh sách
+
+    // ================= FORM =================
+    form.category-create__form(
+      action=`${prefixAdmin}/categories/create`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+
+      // ===== Title =====
+      .form-group
+        label Tên danh mục
+        input(
+          type="text"
+          name="title"
+          placeholder="Nhập tên danh mục..."
+          required
+        )
+
+      // ===== Description =====
+      .form-group
+        label Mô tả
+        textarea(
+          name="description"
+          rows="4"
+          placeholder="Nhập mô tả..."
+        )
+
+      // ===== Thumbnail =====
+      .form-group
+        label Ảnh đại diện
+
+        input(
+          type="file"
+          name="thumbnail"
+          accept="image/*"
+          id="thumbnailInput"
+          btn-thumb
+        )
+
+      // Preview
+      .thumbnail-preview
+        img#thumbnailPreview(src="", alt="" style="display:none")
+
+      // ===== Parent Category =====
+      .form-group
+        label Danh mục cha
+        select(name="parentId")
+          option(value="") -- Không có --
+          //- categories là dữ liệu truyền từ controller
+          each item in categories
+            option(value=item.id)= item.title
+
+      // ===== Position =====
+      .form-group
+        label Vị trí
+        input(
+          type="number"
+          name="position"
+          placeholder="Vị trí tự động tăng"
+
+        )
+
+      // ===== Status =====
+      .form-group
+        label Trạng thái
+        select(name="status")
+          option(value="active") Hoạt động
+          option(value="inactive") Dừng hoạt động
+
+      // ===== Submit =====
+      .form-actions
+        button.btn-submit(type="submit")
+          i.fa-solid.fa-plus
+          span Tạo danh mục

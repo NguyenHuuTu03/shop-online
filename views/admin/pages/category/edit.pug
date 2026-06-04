@@ -1,0 +1,91 @@
+extends ../../layouts/default.pug
+
+block main
+  .category-create
+
+    // ================= TOPBAR =================
+    .category-create__topbar
+      .category-create__title
+        span.title-line
+        h2 Chỉnh sửa danh mục
+
+      .category-create__actions
+        a.btn-back(href=`${prefixAdmin}/categories`)
+          i.fa-solid.fa-arrow-left
+          span Danh sách
+
+    // ================= FORM =================
+    form.category-create__form(
+      action=`${prefixAdmin}/categories/edit/${category.id}?_method=PATCH`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+
+      // ===== TITLE =====
+      .form-group
+        label Tên danh mục
+        input(
+          type="text"
+          name="title"
+          value=category.title
+          required
+        )
+
+      // ===== DESCRIPTION =====
+      .form-group
+        label Mô tả
+        textarea(name="description")
+          | #{category.description}
+
+      // ===== THUMBNAIL =====
+      .form-group
+        label Ảnh đại diện
+
+        input(
+          type="file"
+          name="thumbnail"
+          class="category-input-file"
+          accept="image/*"
+          id="thumbnailInput"
+        )
+
+      // PREVIEW ẢNH CŨ
+      .thumbnail-preview
+        if category.thumbnail
+          img#thumbnailPreview(src=category.thumbnail, style="display:block")
+        else
+          img#thumbnailPreview
+
+      // ===== PARENT =====
+      .form-group
+        label Danh mục cha
+        select(name="parentId")
+          option(value="") -- Không có --
+          each item in category.categories
+            option(
+              value=item.id
+              selected=item.id == category.parentId
+            )= item.title
+
+      // ===== POSITION =====
+      .form-group
+        label Vị trí
+        input(
+          type="number"
+          name="position"
+          value=category.position
+        )
+
+      // ===== STATUS =====
+      .form-group
+        label Trạng thái
+        select(name="status")
+          option(value="active" selected=category.status=="active") Hoạt động
+          option(value="inactive" selected=category.status=="inactive") Dừng hoạt động
+
+      // ===== SUBMIT =====
+      .form-actions
+        button.btn-submit(type="submit")
+          i.fa-solid.fa-floppy-disk
+          span Cập nhật danh mục
+
