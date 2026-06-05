@@ -92,8 +92,8 @@ block main
           // ===== ROLE =====
           .form-group
             label Vai trò
-            select.form-control(name="role")
-              option(value="") -- Vai trò --
+            select.form-control(name="roleId")
+              option(value="") -- Chọn vai trò -- 
               each role in roles
                 option(value=role.id) #{role.title}
 

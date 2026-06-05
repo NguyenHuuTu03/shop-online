@@ -27,7 +27,7 @@ module.exports.loginPost = async (req, res) => {
     const role = await Role.findOne({
       _id: exitsEmail.roleId,
     });
-    if (!role) {
+    if (role.title == "User") {
       req.flash("error", "Tài khoản không có quyền truy cập!");
       res.redirect(req.get("Referer"));
       return;
@@ -44,27 +44,22 @@ module.exports.loginPost = async (req, res) => {
     res.redirect(req.get("Referer"));
     return;
   }
-  if (!exitsEmail.tokenAdmin) {
-    req.flash("error", "Tài khoản không có quyền truy cập!");
-    res.redirect(req.get("Referer"));
-    return;
-  }
-  res.cookie("tokenAdmin", exitsEmail.tokenAdmin);
+  res.cookie("tokenUser", exitsEmail.tokenUser);
   res.redirect(`${systemConfig.prefixAdmin.path}/dashboard`);
 };
 
 // [GET] /admin/auth/logout
 module.exports.logout = (req, res) => {
-  res.clearCookie("tokenAdmin");
+  res.clearCookie("tokenUser");
   res.redirect(`${systemConfig.prefixAdmin.path}/auth/login`);
 };
 
 // [GET] /admin/my-account
 module.exports.profile = async (req, res) => {
-  const token = req.cookies.tokenAdmin;
+  const token = req.cookies.tokenUser;
   const user = await User.findOne({
     deleted: false,
-    tokenAdmin: token,
+    tokenUser: token,
   }).select("-password");
   const role = await Role.findOne({
     deleted: false,
@@ -103,11 +98,11 @@ module.exports.editProfile = async (req, res) => {
 // [PATCH] /admin/my-account/edit
 module.exports.editProfilePatch = async (req, res) => {
   const email = req.body.email;
-  const token = req.cookies.tokenAdmin;
+  const token = req.cookies.tokenUser;
   const exitsEmail = await User.findOne({
     deleted: false,
     email: email,
-    tokenAdmin: { $ne: token },
+    tokenUser: { $ne: token },
   });
   if (exitsEmail) {
     req.flash("error", "Email đã tồn tại!");
@@ -115,7 +110,7 @@ module.exports.editProfilePatch = async (req, res) => {
     return;
   }
   const user = await User.findOne({
-    tokenAdmin: token,
+    tokenUser: token,
   });
   if (req.body.password) {
     req.body.password = md5(req.body.password);
@@ -124,7 +119,7 @@ module.exports.editProfilePatch = async (req, res) => {
   }
   await User.updateOne(
     {
-      tokenAdmin: token,
+      tokenUser: token,
     },
     req.body,
   );

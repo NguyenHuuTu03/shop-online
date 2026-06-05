@@ -45,6 +45,7 @@ module.exports.index = async (req, res) => {
   res.render("admin/pages/category/index", {
     pageTitle: "Quản lý danh mục sản phẩm",
     categories: categories,
+    page: "category",
     totalPage: objectPagination.totalPage,
     currentPage: objectPagination.currentPage,
   });
@@ -63,7 +64,6 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/categories/create
 module.exports.createPost = async (req, res) => {
-  console.log(req.body);
   let position = await Category.countDocuments();
   position += 1;
   if (req.body.position) {
@@ -120,7 +120,6 @@ module.exports.edit = async (req, res) => {
 // [PATCH] /admin/categories/edit/:categoryId
 module.exports.editPatch = async (req, res) => {
   const categoryId = req.params.categoryId;
-  console.log(req.body);
   let position = await Category.countDocuments();
   position += 1;
   if (req.body.position) {

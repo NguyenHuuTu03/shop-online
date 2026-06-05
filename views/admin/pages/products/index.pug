@@ -78,10 +78,10 @@ block main
                     span.position-badge #{item.position}
                   if(item.status == "active")
                     td
-                      button.status-active Hoạt động
+                      button.status-active(btn-status=item.status btn-id=item.id page=page) Hoạt động
                   if(item.status == "inactive")
                     td
-                      button.status-inactive Dừng hoạt động
+                      button.status-inactive(btn-status=item.status btn-id=item.id page=page) Dừng hoạt động
                   td
                     .action-group
                       a.action-btn.view(href=prefixAdmin + `/products/detail/${item.id}` title="Chi tiết")

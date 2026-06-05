@@ -59,6 +59,7 @@ module.exports.index = async (req, res) => {
   res.render("admin/pages/users/index", {
     pageTitle: "Quản lý danh mục sản phẩm",
     users: users,
+    page: "user",
     totalPage: objectPagination.totalPage,
     currentPage: objectPagination.currentPage,
   });
@@ -90,9 +91,7 @@ module.exports.createPost = async (req, res) => {
   if (req.body.password) {
     req.body.password = md5(req.body.password);
   }
-  if (req.body.roleId) {
-    req.body.tokenAdmin = generateHelpers.generateRandomString(30);
-  }
+  req.body.tokenUser = generateHelpers.generateRandomString(30);
 
   const dataUser = new User(req.body);
   await dataUser.save();
@@ -128,6 +127,13 @@ module.exports.edit = async (req, res) => {
     deleted: false,
     _id: userId,
   }).select("-password");
+
+  if (user.roleId) {
+    const role = await Role.findOne({
+      _id: user.roleId,
+    });
+    user.role = role;
+  }
 
   const roles = await Role.find({
     deleted: false,

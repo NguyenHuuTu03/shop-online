@@ -56,9 +56,9 @@ block main
 
                   td.text-center
                     if role.status == "active"
-                      span.status.status--active Hoạt động
+                      button.status.status--active(btn-status=role.status btn-id=role.id page=page) Hoạt động
                     else
-                      span.status.status--inactive Dừng hoạt động
+                      button.status.status--inactive(btn-status=role.status btn-id=role.id page=page) Dừng hoạt động
 
                   td
                     .action-group

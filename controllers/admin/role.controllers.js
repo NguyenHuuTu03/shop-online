@@ -9,6 +9,7 @@ module.exports.index = async (req, res) => {
   res.render("admin/pages/roles/index", {
     pageTitle: "Nhóm quyền",
     roles: roles,
+    page: "role",
   });
 };
 

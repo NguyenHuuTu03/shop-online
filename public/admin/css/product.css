@@ -1092,6 +1092,18 @@ input[type="file"].product-create__input::-webkit-file-upload-button:hover {
 
   object-fit: contain;
 }
+.empty-box {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+
+  color: #94a3b8;
+  font-size: 14px;
+}
 
 /* =====================================
    GALLERY

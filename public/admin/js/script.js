@@ -133,6 +133,9 @@ if (inputThumb) {
     const file = e.target.files[0];
     if (file) {
       previewThumbnail.src = URL.createObjectURL(file);
+      // if (previewThumbnail.classList.contains("d-none")) {
+      //   previewThumbnail.classList.remove("d-none");
+      // }
       previewThumbnail.style.display = "block";
     }
   });
@@ -156,3 +159,36 @@ if (formDelete) {
 }
 
 // End Delete item
+
+// Change status
+const btnStatus = document.querySelectorAll("[btn-status]");
+if (btnStatus.length > 0) {
+  btnStatus.forEach((button) => {
+    button.addEventListener("click", async () => {
+      let status = button.getAttribute("btn-status");
+      const id = button.getAttribute("btn-id");
+      const page = button.getAttribute("page");
+      if (status == "active") {
+        status = "inactive";
+      } else {
+        status = "active";
+      }
+      const res = await fetch(`/admin/api/change-status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          status: status,
+          page: page,
+        }),
+      });
+      const data = await res.json();
+      if (data.code == 200) {
+        window.location.reload();
+      }
+    });
+  });
+}
+// End Change status

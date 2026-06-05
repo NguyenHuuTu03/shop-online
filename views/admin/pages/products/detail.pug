@@ -20,11 +20,13 @@ block main
 
         .product-detail__card
           h3.product-detail__card-title Ảnh đại diện
-
-          img.product-thumbnail(
-            src=product.thumbnail
-            alt=product.title
-          )
+          if product.thumbnail
+            img.product-thumbnail(
+              src=product.thumbnail
+              alt=product.title
+            )
+          else 
+            .empty-box Chưa có ảnh
 
         if product.images && product.images.length > 0
           .product-detail__card

@@ -22,9 +22,9 @@ mixin table-tree(items, level = 1)
 
       td.col-status
         if item.status == "active"
-          span.status-active Hoạt động
+          button.status-active(btn-status=item.status btn-id=item.id page=page) Hoạt động
         else
-          span.status-inactive Dừng hoạt động
+          button.status-inactive(btn-status=item.status btn-id=item.id page=page) Dừng hoạt động
 
       td.col-action
         .action-group

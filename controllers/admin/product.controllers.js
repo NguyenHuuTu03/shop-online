@@ -48,6 +48,7 @@ module.exports.index = async (req, res) => {
   res.render("admin/pages/products/index", {
     pageTitle: "Quản lý sản phẩm",
     products: products,
+    page: "product",
     totalPage: objectPagination.totalPage,
     currentPage: objectPagination.currentPage,
   });
@@ -72,25 +73,22 @@ module.exports.create = async (req, res) => {
 module.exports.createPost = async (req, res) => {
   let position = await Products.countDocuments();
   position += 1;
-  const dataProduct = {
-    title: req.body.title,
-    price: parseInt(req.body.price),
-    discount: parseInt(req.body.discount),
-    description: req.body.description,
-    warranty: req.body.warranty,
-    shippingInfo: req.body.shippingInfo,
-    categoryId: req.body.categoryId,
-    brandId: req.body.brandId,
-    status: req.body.status,
-    featured: req.body.featured,
-    position: position,
-    tags: req.body.tags,
-    specifications: req.body.specifications,
-    variants: req.body.variants,
-    thumbnail: req.body.thumbnail[0],
-    images: req.body.images,
-  };
-  const product = new Products(dataProduct);
+  if (req.body.position) {
+    req.body.position = parseInt(req.body.position);
+  } else {
+    req.body.position = position;
+  }
+  if (req.body.thumbnail) {
+    req.body.thumbnail = req.body.thumbnail[0];
+  }
+  if (req.body.discount) {
+    req.body.discount = parseInt(req.body.discount);
+  }
+  if (req.body.price) {
+    req.body.price = parseInt(req.body.price);
+  }
+
+  const product = new Products(req.body);
   await product.save();
   res.redirect(`${systemConfig.prefixAdmin.path}/products`);
 };

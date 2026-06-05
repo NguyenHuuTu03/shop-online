@@ -289,9 +289,18 @@ USER INFO
 }
 
 .user-role {
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 12px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  border-radius: 999px;
+
+  font-size: 12px;
   font-weight: 600;
-  color: #334155;
 }
 
 /* =========================
@@ -772,34 +781,6 @@ select.form-control {
   flex-wrap: wrap;
 }
 
-.badge {
-  padding: 5px 10px;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 999px;
-}
-
-.badge--admin {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.badge--user {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.badge--active {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.badge--inactive {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-/* ================= GRID (FIX LỖI DÍNH CHỮ) ================= */
 .user-detail__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

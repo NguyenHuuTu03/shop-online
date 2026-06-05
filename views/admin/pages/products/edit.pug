@@ -61,8 +61,11 @@ block main
               accept="image/*"
               btn-thumb
             )
-            img#thumbnailPreview.preview-img(src=product.thumbnail alt=product.title )
-
+            .thumbnail-preview
+              if product.thumbnail
+                img#thumbnailPreview(src=product.thumbnail, style="display:block")
+              else
+                img#thumbnailPreview
           .product-create__field
             label Ảnh sản phẩm
             input.product-create__input(

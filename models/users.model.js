@@ -15,7 +15,6 @@ const userSchema = mongoose.Schema(
     },
     deletedAt: Date,
     tokenUser: String,
-    tokenAdmin: String,
     roleId: String,
     deletedBy: String,
     updatedBy: String,

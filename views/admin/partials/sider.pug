@@ -6,68 +6,44 @@
         a(href=prefixAdmin + "/dashboard")
           i.fa-solid.fa-gauge-high
           span Tổng quan
-
-      if(role && role.permission && role.permission.includes("products_view"))
+      
+      if(role && role.permissions && role.permissions.includes("product_view"))
         li
           a(href=prefixAdmin + "/products")
             i.fa-solid.fa-box-open
             span Sản phẩm
-
-      if(role && role.permission && role.permission.includes("products-category_view"))
+      if(role && role.permissions && role.permissions.includes("category_view"))
         li
-          a(href=prefixAdmin + "/products-category")
+          a(href=prefixAdmin + "/categories")
             i.fa-solid.fa-layer-group
             span Danh mục sản phẩm
-
-      if(role && role.permission && role.permission.includes("roles_view"))
+      if(role && role.permissions && role.permissions.includes("user_view"))
+        li
+          a(href=prefixAdmin + "/users")
+            i.fa-solid.fa-user
+            span Quản lý người dùng
+      if(role && role.permissions && role.permissions.includes("order_view"))
+        li
+          a(href=prefixAdmin + "/orders")
+            i.fa-solid.fa-cart-shopping.me-2
+            span Quản lý đơn hàng
+      if(role && role.permissions && role.permissions.includes("deliveries_view"))
+        li
+          a(href=prefixAdmin + "/deliveries")
+            i.fa-solid.fa-truck-fast.me-2
+            span Giao hàng
+      if(role && role.permissions && role.permissions.includes("role_view"))
         li
           a(href=prefixAdmin + "/roles")
             i.fa-solid.fa-users-gear
             span Nhóm quyền
-
-      if(role && role.permission && role.permission.includes("roles_permissions"))
+      if(role && role.permissions && role.permissions.includes("role_permissions"))
         li
           a(href=prefixAdmin + "/roles/permission")
             i.fa-solid.fa-key
             span Phân quyền
-
-      if(role && role.permission && role.permission.includes("accounts_view"))
+      if(role && role.permissions && role.permissions.includes("general"))
         li
-          a(href=prefixAdmin + "/accounts")
-            i.fa-solid.fa-user-tie
-            span Quản lý tài khoản
-
-      li
-        a(href=prefixAdmin + "/products")
-          i.fa-solid.fa-box-open
-          span Sản phẩm
-
-      li
-        a(href=prefixAdmin + "/categories")
-          i.fa-solid.fa-layer-group
-          span Danh mục sản phẩm
-      li
-        a(href=prefixAdmin + "/users")
-          i.fa-solid.fa-user
-          span Quản lý người dùng
-      li
-        a(href=prefixAdmin + "/orders")
-          i.fa-solid.fa-cart-shopping.me-2
-          span Quản lý đơn hàng
-      li
-        a(href=prefixAdmin + "/deliveries")
-          i.fa-solid.fa-truck-fast.me-2
-          span Giao hàng
-      li
-        a(href=prefixAdmin + "/roles")
-          i.fa-solid.fa-users-gear
-          span Nhóm quyền
-      li
-        a(href=prefixAdmin + "/roles/permission")
-          i.fa-solid.fa-key
-          span Phân quyền
-
-      li
-        a(href=prefixAdmin + "/settings/general")
-          i.fa-solid.fa-gear
-          span Cài đặt chung
+          a(href=prefixAdmin + "/settings/general")
+            i.fa-solid.fa-gear
+            span Cài đặt chung
