@@ -192,3 +192,93 @@ if (btnStatus.length > 0) {
   });
 }
 // End Change status
+
+// Cập nhật trạng thái thanh toán
+const btnPaymentStatus = document.querySelectorAll("[btn-payment]");
+if (btnPaymentStatus.length > 0) {
+  btnPaymentStatus.forEach((button) => {
+    button.addEventListener("click", async () => {
+      let statusPayment = button.getAttribute("btn-payment");
+      if (statusPayment == "UNPAID") {
+        statusPayment = "PAID";
+      } else if (statusPayment == "PAID") {
+        statusPayment = "UNPAID";
+      }
+      const orderId = button.getAttribute("btn-data-order");
+      const res = await fetch(`/admin/deliver/change-payment-status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          paymentStatus: statusPayment,
+        }),
+      });
+      const data = await res.json();
+      if (data.code == 200) {
+        if (data.orderStatus == "COMPLETED") {
+          window.location.reload();
+        }
+      }
+    });
+  });
+}
+// Hết Cập nhật trạng thái thanh toán
+
+// Cập nhật trạng thái đơn hàng
+const listStatus = [
+  {
+    status: "PENDING",
+    label: "Chờ xác nhận",
+  },
+  {
+    status: "CONFIRMED",
+    label: "Đã xác nhận",
+  },
+  {
+    status: "SHIPPING",
+    label: "Đang giao",
+  },
+  {
+    status: "COMPLETED",
+    label: "Đã giao",
+  },
+];
+const buttonStatusOrder = document.querySelectorAll("[btn-status-order]");
+if (buttonStatusOrder.length > 0) {
+  buttonStatusOrder.forEach((button) => {
+    button.addEventListener("click", () => {
+      const orderStatus = button.getAttribute("btn-status-order");
+      if (orderStatus == "CANCELED" || orderStatus == "COMPLETED") {
+        return;
+      } else {
+        const index = listStatus.findIndex(
+          (item) => item.status == orderStatus,
+        );
+        if (index === -1 || index === listStatus.length - 1) return;
+        if (index != -1) {
+          const newStatus = listStatus[index + 1].status;
+          const id = button.getAttribute("data-order");
+          fetch(`/admin/orders/update/${id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              orderId: id,
+              status: newStatus,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.code == 200) {
+                window.location.reload();
+              }
+            });
+        }
+      }
+    });
+  });
+}
+// Hết Cập nhật trạng thái đơn hàng

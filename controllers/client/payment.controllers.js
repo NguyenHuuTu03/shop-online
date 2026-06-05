@@ -15,8 +15,8 @@ module.exports.paymentMomo = async (req, res) => {
   var secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
   var orderInfo = `Thanh toán đơn hàng ${id}`;
   var partnerCode = "MOMO";
-  var redirectUrl = `https://arise-perfume-bucked.ngrok-free.dev/payment/momo-return`;
-  var ipnUrl = `https://arise-perfume-bucked.ngrok-free.dev/payment/momo-return`;
+  var redirectUrl = `http://localhost:3000/payment/momo-return`;
+  var ipnUrl = `http://localhost:3000/payment/momo-return`;
   var requestType = "payWithMethod";
   var amount = Number(totalPrice);
   var orderId = partnerCode + new Date().getTime();
@@ -170,7 +170,8 @@ module.exports.paymentVNPay = async (req, res) => {
   const paymentUrl = vnpay.buildPaymentUrl({
     vnp_Amount: Number(totalPrice),
     vnp_IpAddr: req.ip || "127.0.0.1",
-    vnp_ReturnUrl: `https://arise-perfume-bucked.ngrok-free.dev/payment/vnpay-return`,
+    // vnp_ReturnUrl: `https://arise-perfume-bucked.ngrok-free.dev/payment/vnpay-return`,
+    vnp_ReturnUrl: `http://localhost:3000/payment/vnpay-return`,
     vnp_TxnRef: orderId,
     vnp_OrderInfo: `Thanh toán đơn hàng #${orderId}`,
   });

@@ -3,14 +3,14 @@ const Role = require("../../models/roles.model");
 const systemConfig = require("../../config/system");
 
 module.exports.authRequest = async (req, res, next) => {
-  if (!req.cookies.tokenAdmin) {
+  if (!req.cookies.tokenUser) {
     res.redirect(`${systemConfig.prefixAdmin.path}/auth/login`);
     return;
   } else {
     const user = await User.findOne({
       deleted: false,
       status: "active",
-      tokenAdmin: req.cookies.tokenAdmin,
+      tokenUser: req.cookies.tokenUser,
     }).select("-password");
     if (!user) {
       res.redirect(`${systemConfig.prefixAdmin.path}/auth/login`);

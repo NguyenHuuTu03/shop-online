@@ -71,28 +71,8 @@ module.exports.detail = async (req, res) => {
   });
 };
 
-// [GET] /admin/orders/edit/:orderId
-module.exports.edit = async (req, res) => {
-  const orderId = req.params.orderId;
-  const order = await Order.findOne({
-    _id: orderId,
-  });
-  for (const item of order.products) {
-    const productInfo = await Products.findOne({
-      _id: item.productId,
-    }).select("title thumbnail");
-    item.productInfo = productInfo;
-    item.priceNew = Math.round(item.price * (1 - item.discount / 100));
-    item.totalPrice = item.quantity * item.priceNew;
-  }
-  res.render("admin/pages/orders/edit", {
-    pageTitle: "Cập nhật đơn hàng",
-    order: order,
-  });
-};
-
-// [PATCH] /admin/orders/edit/status/orderId
-module.exports.editStatus = async (req, res) => {
+// [PATCH] /admin/orders/update/:orderId
+module.exports.update = async (req, res) => {
   const orderId = req.body.orderId;
   const status = req.body.status;
   await Order.updateOne(

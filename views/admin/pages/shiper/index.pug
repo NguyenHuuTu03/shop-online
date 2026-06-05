@@ -8,7 +8,7 @@ block main
     .order-topbar
       .order-title
         span.title-line
-        h2 Quản lý đơn hàng
+        h2 Giao hàng
 
       .order-actions
         form.search-box(method="GET")
@@ -19,6 +19,10 @@ block main
           )
           button(type="submit")
             i.fa-solid.fa-magnifying-glass
+          
+        a.btn-add(href=`${prefixAdmin}/deliver/list`)
+          i.fa-solid.fa-list
+          span Danh sách đơn hàng
 
     //- CONTENT
     .order-content
@@ -63,7 +67,7 @@ block main
           tbody
             if orders && orders.length > 0
               each order, index in orders
-                tr
+                tr(data-order=order.id)
 
                   td
                     input(type="checkbox" value=order._id class="check-item")
@@ -86,37 +90,37 @@ block main
                   //- STATUS ORDER
                   td.col-status
                     if order.status == "PENDING"
-                      button.status.status--pending(btn-status-order=order.status data-order=order.id) Chờ xác nhận
+                      span.status.status--pending Chờ xác nhận
                     else if order.status == "CONFIRMED"
-                      button.status.status--confirmed(btn-status-order=order.status data-order=order.id) Đã xác nhận
+                      span.status.status--confirmed Đã xác nhận
                     else if order.status == "SHIPPING"
-                      button.status.status--shipping(btn-status-order=order.status data-order=order.id) Đang giao
+                      span.status.status--shipping Đang giao
                     else if order.status == "COMPLETED"
-                      button.status.status--delivered(btn-status-order=order.status data-order=order.id) Đã giao
+                      span.status.status--delivered Đã giao
                     else if order.status == "CANCELED"
-                      button.status.status--canceled(btn-status-order=order.status data-order=order.id) Đã huỷ
+                      span.status.status--canceled Đã huỷ
 
                   //- PAYMENT STATUS
                   td.col-payment
                     if order.paymentStatus == "PAID"
-                      span.status.status--paid Đã thanh toán
+                      button.status.status--paid Đã thanh toán
                     else if (order.paymentStatus == "UNPAID" || order.paymentStatus == "PENDING")
-                      span.status.status--unpaid Chưa thanh toán
+                      button.status.status--unpaid Chưa thanh toán
                     else if order.paymentStatus == "FAILED"
-                      span.status.status--failed Thanh toán lỗi
+                      button.status.status--failed Thanh toán lỗi
 
                   //- ACTION
                   td.col-action
                     .action-group
 
-                      a.action-btn.view(
-                        href=`${prefixAdmin}/orders/detail/${order._id}`
-                        title="Chi tiết"
-                      )
-                        i.fa-regular.fa-eye
+                      //- a.action-btn.view(
+                      //-   href=`${prefixAdmin}/deliver/detail/${order._id}`
+                      //-   title="Chi tiết"
+                      //- )
+                      //-   i.fa-regular.fa-eye
 
-                      //- button.action-btn.accept(btn-add-order=order.id)
-                      //-   i.fa-solid.fa-box
+                      button.action-btn.accept(btn-add-ship=order.id)
+                        i.fa-solid.fa-box
 
                       //- a.action-btn.delete(
                       //-   href=`${prefixAdmin}/orders/delete/${order._id}`
@@ -149,4 +153,4 @@ block main
             a.page-link(href=`?page=${currentPage + 1}`) Next
 
 block scripts 
-  script(src="/admin/js/order.js") 
+  script(src="/admin/js/ship.js") 

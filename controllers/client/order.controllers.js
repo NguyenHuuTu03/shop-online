@@ -105,7 +105,7 @@ module.exports.orderPost = async (req, res) => {
         email: req.body.email,
         address: req.body.address,
         paymentMethod: paymentMethod,
-        paymentStatus: "WAITING_PAYMENT",
+        paymentStatus: "UNPAID",
         products: products,
         totalPrice: totalPrice,
       };
@@ -172,7 +172,7 @@ module.exports.orderPost = async (req, res) => {
         email: req.body.email,
         address: req.body.address,
         paymentMethod: paymentMethod,
-        paymentStatus: "WAITING_PAYMENT",
+        paymentStatus: "UNPAID",
         products: products,
         totalPrice: totalPrice,
       };

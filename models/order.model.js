@@ -9,6 +9,14 @@ const orderSchema = mongoose.Schema(
     address: String,
     paymentMethod: String,
     paymentStatus: String,
+    shipperId: {
+      type: String,
+      default: "",
+    },
+    shipStatus: {
+      type: String,
+      default: "PENDING",
+    },
     status: {
       type: String,
       default: "PENDING",

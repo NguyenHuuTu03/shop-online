@@ -11,7 +11,7 @@ block main
         h2 Đơn hàng ##{order._id}
 
       .order-detail__actions
-        a.btn-back(href=`${prefixAdmin}/orders`)
+        a.btn-back(href=`${prefixAdmin}/deliver/list`)
           i.fa-solid.fa-arrow-left
           span Quay lại
 
@@ -113,15 +113,19 @@ block main
             .detail-row
               span.label Trạng thái thanh toán
               span.value
-                span.payment-status(class=order.paymentStatus)
-                  if order.paymentStatus == "PAID"
-                    | Đã thanh toán
-                  else if order.paymentStatus == "UNPAID"
-                    | Chưa thanh toán
-                  else if order.paymentStatus == "REFUNDED"
-                    | Đã hoàn tiền
-                  else
-                    | #{order.paymentStatus}
+                //- button.payment-status(class=order.paymentStatus btn-payment=order.paymentStatus btn-data-order=order.id status-order=order.status)
+                //-   if order.paymentStatus == "PAID"
+                //-     | Đã thanh toán
+                //-   else if order.paymentStatus == "UNPAID"
+                //-     | Chưa thanh toán
+                //-   else if order.paymentStatus == "REFUNDED"
+                //-     | Đã hoàn tiền
+                //-   else
+                //-     | #{order.paymentStatus}
+                if order.paymentStatus == "PAID"
+                  button.status.status--paid(btn-payment=order.paymentStatus btn-data-order=order.id status-order=order.status) Đã thanh toán
+                else if (order.paymentStatus == "UNPAID")
+                  button.status.status--unpaid(btn-payment=order.paymentStatus btn-data-order=order.id status-order=order.status) Chưa thanh toán
           // ===== SUMMARY =====
           .order-summary
             .detail-row.detail-row--total

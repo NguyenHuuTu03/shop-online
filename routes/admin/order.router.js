@@ -4,7 +4,6 @@ const controller = require("../../controllers/admin/order.controllers");
 
 router.get("/", controller.index);
 router.get("/detail/:orderId", controller.detail);
-router.get("/edit/:orderId", controller.edit);
-router.patch("/edit/status/:orderId", controller.editStatus);
+router.patch("/update/:orderId", controller.update);
 
 module.exports = router;

@@ -27,9 +27,9 @@
           a(href=prefixAdmin + "/orders")
             i.fa-solid.fa-cart-shopping.me-2
             span Quản lý đơn hàng
-      if(role && role.permissions && role.permissions.includes("deliveries_view"))
+      if(role && role.permissions && role.permissions.includes("deliver_view"))
         li
-          a(href=prefixAdmin + "/deliveries")
+          a(href=prefixAdmin + "/deliver")
             i.fa-solid.fa-truck-fast.me-2
             span Giao hàng
       if(role && role.permissions && role.permissions.includes("role_view"))

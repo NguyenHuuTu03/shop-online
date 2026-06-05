@@ -8,6 +8,7 @@ const roleRoutes = require("./role.router");
 const authRoutes = require("./auth.router");
 const apiRoutes = require("./api.router");
 const myAccountRoutes = require("./my-account.router");
+const shipRoutes = require("./ship.router");
 const authMiddleware = require("../../middleware/admin/auth.middleware");
 
 module.exports = (app) => {
@@ -32,5 +33,6 @@ module.exports = (app) => {
     authMiddleware.authRequest,
     myAccountRoutes,
   );
+  app.use(prefixAdmin + "/deliver", authMiddleware.authRequest, shipRoutes);
   app.use(prefixAdmin + "/api", apiRoutes);
 };

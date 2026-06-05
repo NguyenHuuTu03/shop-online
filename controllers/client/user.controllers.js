@@ -1,6 +1,7 @@
 const md5 = require("md5");
 const User = require("../../models/users.model");
 const Order = require("../../models/order.model");
+const Role = require("../../models/roles.model");
 const Products = require("../../models/product.model");
 const generateHelpers = require("../../helpers/generate");
 const ForgotPassword = require("../../models/forgot-password");
@@ -18,10 +19,19 @@ module.exports.loginPost = async (req, res) => {
   const exitsEmail = await User.findOne({
     deleted: false,
     email: req.body.email,
-    role: "user",
   });
   if (!exitsEmail) {
     req.flash("error", "Email không tồn tại!");
+    res.redirect(req.get("Referer"));
+    return;
+  }
+  const role = await Role.findOne({
+    _id: exitsEmail.roleId,
+    deleted: false,
+  });
+  const isPermission = role.permissions.includes("client_view");
+  if (!isPermission) {
+    req.flash("error", "Tài khoản không có quyền truy cập!");
     res.redirect(req.get("Referer"));
     return;
   }
@@ -36,7 +46,7 @@ module.exports.loginPost = async (req, res) => {
     return;
   }
   if (exitsEmail.deleted == true) {
-    req.flash("error", "Tài khoản đã bị xoá!!");
+    req.flash("error", "Tài khoản đã bị xoá!");
     res.redirect(req.get("Referer"));
     return;
   }
@@ -62,6 +72,10 @@ module.exports.registerPost = async (req, res) => {
     res.redirect(req.get("Referer"));
     return;
   }
+  const role = await Role.findOne({
+    deleted: false,
+    title: "User",
+  });
   req.body.password = md5(req.body.password);
   const user = new User({
     fullName: req.body.fullName,
@@ -69,6 +83,7 @@ module.exports.registerPost = async (req, res) => {
     password: req.body.password,
     status: "active",
     tokenUser: generateHelpers.generateRandomString(30),
+    roleId: role.id,
   });
   await user.save();
   res.cookie("tokenUser", user.tokenUser);

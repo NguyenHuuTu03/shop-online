@@ -23,7 +23,6 @@ module.exports.index = async (req, res) => {
     limitItem: objectFilter.limit,
   };
 
-  // SEARCH + FILTER (luôn chạy)
   find = searchHelpers.search(find, req.query);
   objectFilter = filterHelpers.filterAdmin(find, req.query, objectFilter);
 

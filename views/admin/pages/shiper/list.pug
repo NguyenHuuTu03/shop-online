@@ -8,7 +8,7 @@ block main
     .order-topbar
       .order-title
         span.title-line
-        h2 Quản lý đơn hàng
+        h2 Đơn hàng đã nhận
 
       .order-actions
         form.search-box(method="GET")
@@ -19,6 +19,10 @@ block main
           )
           button(type="submit")
             i.fa-solid.fa-magnifying-glass
+
+        a.btn-back(href=`${prefixAdmin}/deliver`)
+          i.fa-solid.fa-arrow-left
+          span Danh sách
 
     //- CONTENT
     .order-content
@@ -99,30 +103,21 @@ block main
                   //- PAYMENT STATUS
                   td.col-payment
                     if order.paymentStatus == "PAID"
-                      span.status.status--paid Đã thanh toán
-                    else if (order.paymentStatus == "UNPAID" || order.paymentStatus == "PENDING")
-                      span.status.status--unpaid Chưa thanh toán
-                    else if order.paymentStatus == "FAILED"
-                      span.status.status--failed Thanh toán lỗi
+                      button.status.status--paid(btn-payment=order.paymentStatus btn-data-order=order.id status-order=order.status) Đã thanh toán
+                    else if (order.paymentStatus == "UNPAID")
+                      button.status.status--unpaid(btn-payment=order.paymentStatus btn-data-order=order.id status-order=order.status) Chưa thanh toán
+                    //- else if order.paymentStatus == "FAILED"
+                    //-   button.status.status--failed Thanh toán lỗi
 
                   //- ACTION
                   td.col-action
                     .action-group
 
                       a.action-btn.view(
-                        href=`${prefixAdmin}/orders/detail/${order._id}`
+                        href=`${prefixAdmin}/deliver/detail/${order.id}`
                         title="Chi tiết"
                       )
                         i.fa-regular.fa-eye
-
-                      //- button.action-btn.accept(btn-add-order=order.id)
-                      //-   i.fa-solid.fa-box
-
-                      //- a.action-btn.delete(
-                      //-   href=`${prefixAdmin}/orders/delete/${order._id}`
-                      //-   title="Xóa"
-                      //- )
-                      //-   i.fa-regular.fa-trash-can
 
             else
               tr

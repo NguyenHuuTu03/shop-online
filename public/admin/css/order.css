@@ -332,6 +332,7 @@ ACTION BUTTON
   font-size: 14px;
 
   transition: 0.25s;
+  border: none;
 }
 
 .action-btn.view:hover {
@@ -341,6 +342,13 @@ ACTION BUTTON
 
 .action-btn.edit:hover {
   background: #f59e0b;
+  color: #fff;
+}
+
+/* Nút nhận đơn */
+
+.action-btn.accept:hover {
+  background: #16a34a;
   color: #fff;
 }
 
@@ -381,6 +389,45 @@ RESPONSIVE
 
   .search-box input {
     width: 100%;
+  }
+  .search-box button {
+    width: 44px;
+    height: 42px;
+
+    border: none;
+    border-left: 1px solid #e2e8f0;
+
+    background: #fff;
+    cursor: pointer;
+
+    transition: 0.2s;
+  }
+
+  .search-box button:hover {
+    background: #f8fafc;
+  }
+  .btn-add {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 18px;
+
+    background: #2f9cff;
+    color: #fff;
+
+    border-radius: 999px;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.3s;
+  }
+
+  .btn-add:hover {
+    background: #1688e8;
+    color: #fff;
   }
 
   .filter-bar {
