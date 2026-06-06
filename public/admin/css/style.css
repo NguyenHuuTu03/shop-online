@@ -52,10 +52,8 @@ a {
   align-items: center;
   gap: 10px;
 }
-
-.header-left a i {
-  color: #3b82f6;
-  font-size: 22px;
+.header-logo {
+  width: 180px;
 }
 
 .header-right .btn {

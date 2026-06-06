@@ -1,20 +1,3 @@
-// Preview nhiều Image
-const inputImage = document.querySelector("[btn-image]");
-const previewImage = document.querySelector("#imagesPreview");
-if (inputImage) {
-  inputImage.addEventListener("change", (e) => {
-    previewImage.innerHTML = "";
-    for (const file of e.target.files) {
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.classList.add("preview-img");
-
-      previewImage.appendChild(img);
-    }
-  });
-}
-// Preview nhiều Image
-
 // Thêm phiên bản
 const buttonVariant = document.querySelector(".btn-variant");
 const variantContainer = document.querySelector("#variant-container");

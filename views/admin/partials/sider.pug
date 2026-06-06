@@ -1,28 +1,28 @@
 .sider
   .inner-menu
     ul.list-unstyled.mb-0
-
-      li
-        a(href=prefixAdmin + "/dashboard")
-          i.fa-solid.fa-gauge-high
-          span Tổng quan
+      if(role && role.permissions && role.permissions.includes("dashboard_view"))
+        li
+          a(href=prefixAdmin + "/dashboard")
+            i.fa-solid.fa-gauge-high
+            span Tổng quan
       
-      if(role && role.permissions && role.permissions.includes("product_view"))
+      if(role && role.permissions && role.permissions.includes("products_view"))
         li
           a(href=prefixAdmin + "/products")
             i.fa-solid.fa-box-open
             span Sản phẩm
-      if(role && role.permissions && role.permissions.includes("category_view"))
+      if(role && role.permissions && role.permissions.includes("categories_view"))
         li
           a(href=prefixAdmin + "/categories")
             i.fa-solid.fa-layer-group
             span Danh mục sản phẩm
-      if(role && role.permissions && role.permissions.includes("user_view"))
+      if(role && role.permissions && role.permissions.includes("users_view"))
         li
           a(href=prefixAdmin + "/users")
             i.fa-solid.fa-user
             span Quản lý người dùng
-      if(role && role.permissions && role.permissions.includes("order_view"))
+      if(role && role.permissions && role.permissions.includes("orders_view"))
         li
           a(href=prefixAdmin + "/orders")
             i.fa-solid.fa-cart-shopping.me-2
@@ -32,12 +32,12 @@
           a(href=prefixAdmin + "/deliver")
             i.fa-solid.fa-truck-fast.me-2
             span Giao hàng
-      if(role && role.permissions && role.permissions.includes("role_view"))
+      if(role && role.permissions && role.permissions.includes("roles_view"))
         li
           a(href=prefixAdmin + "/roles")
             i.fa-solid.fa-users-gear
             span Nhóm quyền
-      if(role && role.permissions && role.permissions.includes("role_permissions"))
+      if(role && role.permissions && role.permissions.includes("roles_permissions"))
         li
           a(href=prefixAdmin + "/roles/permission")
             i.fa-solid.fa-key

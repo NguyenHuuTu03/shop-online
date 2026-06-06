@@ -10,6 +10,9 @@ html
     link(rel="stylesheet", href="/admin/css/user.css")
     link(rel="stylesheet", href="/admin/css/order.css")
     link(rel="stylesheet", href="/admin/css/role.css")
+    link(rel="stylesheet", href="/admin/css/dashboard.css")
+    link(rel="stylesheet", href="/admin/css/error.css")
+    link(rel="stylesheet", href="/admin/css/general.css")
     //- trong pug thì muốn đi vào đường dẫn public thì chỉ cần / là sẽ đi vào public
   body 
       include ../partials/header.pug
@@ -25,6 +28,6 @@ html
       script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js") 
       script(src="/tinymce/tinymce.min.js")
       script(src="/admin/js/tinymce-config.js") 
-      //- script(src="https://cdn.jsdelivr.net/npm/chart.js")
+      //- script(src="https://unpkg.com/@antv/g2plot@latest/dist/g2plot.min.js")
       script(src="/admin/js/script.js") 
       block scripts

@@ -86,16 +86,16 @@ block main
 
             .permission-list
 
-              if role.permissions.includes("category_view")
+              if role.permissions.includes("categories_view")
                 span.permission-badge Xem
 
-              if role.permissions.includes("category_create")
+              if role.permissions.includes("categories_create")
                 span.permission-badge Thêm
 
-              if role.permissions.includes("category_edit")
+              if role.permissions.includes("categories_edit")
                 span.permission-badge Sửa
 
-              if role.permissions.includes("category_delete")
+              if role.permissions.includes("categories_delete")
                 span.permission-badge Xóa
 
           // SẢN PHẨM
@@ -106,16 +106,16 @@ block main
 
             .permission-list
 
-              if role.permissions.includes("product_view")
+              if role.permissions.includes("products_view")
                 span.permission-badge Xem
 
-              if role.permissions.includes("product_create")
+              if role.permissions.includes("products_create")
                 span.permission-badge Thêm
 
-              if role.permissions.includes("product_edit")
+              if role.permissions.includes("products_edit")
                 span.permission-badge Sửa
 
-              if role.permissions.includes("product_delete")
+              if role.permissions.includes("products_delete")
                 span.permission-badge Xóa
 
           // ĐƠN HÀNG
@@ -126,13 +126,13 @@ block main
 
             .permission-list
 
-              if role.permissions.includes("order_view")
+              if role.permissions.includes("orders_view")
                 span.permission-badge Xem
 
-              if role.permissions.includes("order_edit")
+              if role.permissions.includes("orders_edit")
                 span.permission-badge Cập nhật
 
-              if role.permissions.includes("order_delete")
+              if role.permissions.includes("orders_delete")
                 span.permission-badge Xóa
 
           // NHÓM QUYỀN
@@ -143,10 +143,10 @@ block main
 
             .permission-list
 
-              if role.permissions.includes("role_view")
+              if role.permissions.includes("roles_view")
                 span.permission-badge Xem
 
-              if role.permissions.includes("role_permissions")
+              if role.permissions.includes("roles_permissions")
                 span.permission-badge Phân quyền
 
           // NGƯỜI DÙNG
@@ -157,16 +157,16 @@ block main
 
             .permission-list
 
-              if role.permissions.includes("user_view")
+              if role.permissions.includes("users_view")
                 span.permission-badge Xem
 
-              if role.permissions.includes("user_create")
+              if role.permissions.includes("users_create")
                 span.permission-badge Thêm
 
-              if role.permissions.includes("user_edit")
+              if role.permissions.includes("users_edit")
                 span.permission-badge Sửa
 
-              if role.permissions.includes("user_delete")
+              if role.permissions.includes("users_delete")
                 span.permission-badge Xóa
           // NHÓM QUYỀN
           .permission-group
@@ -176,19 +176,19 @@ block main
 
             .permission-list
 
-              if role.permissions.includes("role_view")
+              if role.permissions.includes("roles_view")
                 span.permission-badge Xem
 
-              if role.permissions.includes("role_create")
+              if role.permissions.includes("roles_create")
                 span.permission-badge Thêm
 
-              if role.permissions.includes("role_edit")
+              if role.permissions.includes("roles_edit")
                 span.permission-badge Sửa
 
-              if role.permissions.includes("role_delete")
+              if role.permissions.includes("roles_delete")
                 span.permission-badge Xóa
 
-              if role.permissions.includes("role_permissions")
+              if role.permissions.includes("roles_permissions")
                 span.permission-badge Phân quyền
       else
 

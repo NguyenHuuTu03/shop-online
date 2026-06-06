@@ -142,6 +142,23 @@ if (inputThumb) {
 }
 // End Preview 1 Image
 
+// Preview nhiều Image
+const inputImage = document.querySelector("[btn-image]");
+const previewImage = document.querySelector("#imagesPreview");
+if (inputImage) {
+  inputImage.addEventListener("change", (e) => {
+    previewImage.innerHTML = "";
+    for (const file of e.target.files) {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.classList.add("preview-img");
+
+      previewImage.appendChild(img);
+    }
+  });
+}
+// Preview nhiều Image
+
 // Delete item
 const formDelete = document.querySelector("[form-delete]");
 

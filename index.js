@@ -52,6 +52,12 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin.path;
 clientRoutes(app);
 adminRoutes(app);
 
+app.use((req, res) => {
+  res.status(404).render("admin/pages/errors/404", {
+    pageTitle: "Trang 404",
+  });
+});
+
 app.listen(port, () => {
   console.log(`Hãy truy cập link:http://localhost:${port}/products`);
 });

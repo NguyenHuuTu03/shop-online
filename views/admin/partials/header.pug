@@ -4,9 +4,11 @@ header.header.bg-white.shadow-sm.py-2
 
       // Logo
       .header-left
-        a.text-decoration-none.fw-bold.fs-4.text-dark(href="/admin/dashboard")
-          i.fa-solid.fa-gauge-high.me-2
-          | ADMIN PANEL
+        a.header-brand(href="/admin/dashboard")
+          img.header-logo(
+            src=general.logo
+            alt="Logo"
+          )
 
       // User Actions
       .header-right

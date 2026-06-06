@@ -1,0 +1,107 @@
+extends ../../layouts/default.pug
+
+block main
+  .general-setting
+
+    .general-setting__topbar
+      .general-setting__title
+        span.title-line
+        h2 #{pageTitle}
+
+      .general-setting__actions
+        button.btn-save(type="submit" general-submit)
+          i.fa-solid.fa-floppy-disk
+          span Lưu thay đổi
+
+    form.general-setting__form(
+      action=`${prefixAdmin}/settings/general?_method=PATCH`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+
+      .general-setting__grid
+
+        .general-setting__card
+          h3.general-setting__card-title Thông tin website
+
+          .general-setting__field
+            label Tên website
+            input.general-setting__input(
+              type="text"
+              name="title"
+              value=general ? general.title : ""
+              required
+            )
+
+          .general-setting__field
+            label Hotline
+            input.general-setting__input(
+              type="text"
+              name="hotline"
+              value=general ? general.hotline : ""
+              required
+            )
+
+          .general-setting__field
+            label Email
+            input.general-setting__input(
+              type="email"
+              name="email"
+              value=general ? general.email : ""
+              required
+            )
+
+          .general-setting__field
+            label Địa chỉ
+            textarea.general-setting__textarea(
+              name="address"
+              rows="3"
+              required
+            )= general ? general.address : ""
+        
+        .general-setting__card
+          h3.general-setting__card-title Ảnh Sidebar
+
+          .general-setting__field
+            input.general-setting__input(
+              type="file"
+              name="sideBar"
+              accept="image/*"
+              multiple
+              btn-image
+              
+            )
+          if(general.sideBar.length > 0)
+            .images-preview#imagesPreview
+                each img in general.sideBar 
+                  img(src=img alt="ảnh" class="preview-img")
+
+        .general-setting__card
+          h3.general-setting__card-title Logo Website
+
+          .general-setting__field
+            input.general-setting__input(
+              type="file"
+              name="logo"
+              accept="image/*"
+              btn-thumb
+            )
+
+          .thumbnail-preview
+              if general.logo
+                img#thumbnailPreview(src=general.logo, style="display:block")
+              else
+                img#thumbnailPreview
+
+
+        .general-setting__card.general-setting__card--full
+          h3.general-setting__card-title Footer
+
+          textarea.general-setting__textarea(
+            name="footer"
+            rows="5"
+            required
+          )= general ? general.footer : ""
+
+block scripts 
+  script(src="/admin/js/general.js") 

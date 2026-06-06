@@ -47,26 +47,26 @@ block main
                   i.fa-solid.fa-folder-tree
                   span  Danh mục sản phẩm
 
-              tr(data-name="category_view")
+              tr(data-name="categories_view")
                 td Xem
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
                 
 
-              tr(data-name="category_create")
+              tr(data-name="categories_create")
                 td Thêm
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="category_edit")
+              tr(data-name="categories_edit")
                 td Sửa
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="category_delete")
+              tr(data-name="categories_delete")
                 td Xóa
                 each role in roles
                   td.text-center
@@ -79,25 +79,25 @@ block main
                   i.fa-solid.fa-box-open
                   span  Sản phẩm
 
-              tr(data-name="product_view")
+              tr(data-name="products_view")
                 td Xem
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="product_create")
+              tr(data-name="products_create")
                 td Thêm
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="product_edit")
+              tr(data-name="products_edit")
                 td Sửa
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="product_delete")
+              tr(data-name="products_delete")
                 td Xóa
                 each role in roles
                   td.text-center
@@ -110,19 +110,19 @@ block main
                   i.fa-solid.fa-cart-shopping
                   span  Đơn hàng
 
-              tr(data-name="order_view")
+              tr(data-name="orders_view")
                 td Xem
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="order_edit")
+              tr(data-name="orders_edit")
                 td Cập nhật
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="order_delete")
+              tr(data-name="orders_delete")
                 td Xóa
                 each role in roles
                   td.text-center
@@ -135,30 +135,30 @@ block main
                   i.fa-solid.fa-user-shield
                   span  Nhóm quyền
 
-              tr(data-name="role_view")
+              tr(data-name="roles_view")
                 td Xem
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
-              tr(data-name="role_create")
+              tr(data-name="roles_create")
                 td Thêm
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
                   
-              tr(data-name="role_edit")
+              tr(data-name="roles_edit")
                 td Sửa
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="role_delete")
+              tr(data-name="roles_delete")
                 td Xoá
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="role_permissions")
+              tr(data-name="roles_permissions")
                 td Phân quyền
                 each role in roles
                   td.text-center
@@ -171,32 +171,67 @@ block main
                   i.fa-solid.fa-users
                   span  Người dùng
 
-              tr(data-name="user_view")
+              tr(data-name="users_view")
                 td Xem
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="user_create")
+              tr(data-name="users_create")
                 td Thêm
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="user_edit")
+              tr(data-name="users_edit")
                 td Sửa
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-              tr(data-name="user_delete")
+              tr(data-name="users_delete")
                 td Xóa
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
 
-        // hidden field
-        input(type="hidden" name="permission" value="")
+              // ================= Ship =================
+              tr.section-row
+                td(colspan=`${roles.length + 1}`) 
+                  i.fa-solid.fa-motorcycle
+                  span  Giao hàng
+
+              tr(data-name="deliver_view")
+                td Xem
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="deliver_add")
+                td Nhận
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr(data-name="deliver_update")
+                td Cập nhật
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              // ================= Setting =================
+              tr.section-row
+                td(colspan=`${roles.length + 1}`) 
+                  i.fa-solid.fa-gear
+                  span  Cài đặt chung
+
+              tr(data-name="general")
+                td Cài đặt
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              
 
 block scripts 
   script(src="/admin/js/role.js") 

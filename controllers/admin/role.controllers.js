@@ -83,12 +83,16 @@ module.exports.editPatch = async (req, res) => {
     res.redirect(req.get("Referer"));
     return;
   }
-
+  const dataRole = {
+    title: roleName,
+    status: req.body.status,
+    description: req.body.description,
+  };
   await Role.updateOne(
     {
       _id: roleId,
     },
-    req.body,
+    dataRole,
   );
   res.redirect(req.get("Referer"));
 };

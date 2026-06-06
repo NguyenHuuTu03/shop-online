@@ -9,10 +9,16 @@ const authRoutes = require("./auth.router");
 const apiRoutes = require("./api.router");
 const myAccountRoutes = require("./my-account.router");
 const shipRoutes = require("./ship.router");
+const settingRoutes = require("./setting.router");
 const authMiddleware = require("../../middleware/admin/auth.middleware");
+
+const generalMiddleware = require("../../middleware/public/general.middleware");
 
 module.exports = (app) => {
   const prefixAdmin = systemConfig.prefixAdmin.path;
+
+  app.use(generalMiddleware.general);
+
   app.use(
     prefixAdmin + "/dashboard",
     authMiddleware.authRequest,
@@ -34,5 +40,6 @@ module.exports = (app) => {
     myAccountRoutes,
   );
   app.use(prefixAdmin + "/deliver", authMiddleware.authRequest, shipRoutes);
+  app.use(prefixAdmin + "/settings", authMiddleware.authRequest, settingRoutes);
   app.use(prefixAdmin + "/api", apiRoutes);
 };

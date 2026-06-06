@@ -6,8 +6,11 @@ const orderRoutes = require("./order.router");
 const paymentRoutes = require("./payment.router");
 const userMiddleware = require("../../middleware/client/user.middleware");
 
+const generalMiddleware = require("../../middleware/public/general.middleware");
+
 module.exports = (app) => {
   app.use(userMiddleware.infoUser);
+  app.use(generalMiddleware.general);
 
   app.use("/products", productRoutes);
   app.use("/search", searchRoutes);

@@ -1,0 +1,26 @@
+extends ../../layouts/default.pug
+
+block main
+  .error-page
+    .error-card
+
+      .error-icon
+        i.fa-solid.fa-triangle-exclamation
+
+      .error-code
+        | 404
+
+      h1.error-title
+        | Không tìm thấy trang
+
+      p.error-desc
+        | Trang bạn đang truy cập không tồn tại hoặc đã bị di chuyển.
+
+      .error-actions
+        a.btn-home(href=`${prefixAdmin}/dashboard`)
+          i.fa-solid.fa-house
+          span Về trang tổng quan
+
+        button.btn-back(type="button" onclick="history.back()")
+          i.fa-solid.fa-arrow-left
+          span Quay lại

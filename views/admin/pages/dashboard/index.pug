@@ -1,3 +1,148 @@
 extends ../../layouts/default
+
 block main
-  h1 Tổng quan
+  .dashboard-container
+
+    // TOP BAR
+    .dashboard-topbar
+      .dashboard-title
+        span.title-line
+        h2 Tổng quan hệ thống
+
+      .dashboard-actions
+        a.btn-refresh(href="")
+          i.fa-solid.fa-rotate-right
+          span Làm mới
+
+    // CONTENT
+    .dashboard-content
+
+      // STATISTICS
+      .dashboard-stats
+
+        .stat-card.orders
+          .stat-icon
+            i.fa-solid.fa-cart-shopping
+
+          .stat-info
+            span.stat-label Đơn hàng
+            h3 #{totalOrder || 0}
+
+        .stat-card.products
+          .stat-icon
+            i.fa-solid.fa-box-open
+
+          .stat-info
+            span.stat-label Sản phẩm
+            h3 #{totalProducts || 0}
+
+        .stat-card.users
+          .stat-icon
+            i.fa-solid.fa-users
+
+          .stat-info
+            span.stat-label Khách hàng
+            h3 #{totalUsers || 0}
+
+        .stat-card.revenue
+          .stat-icon
+            i.fa-solid.fa-money-bill-trend-up
+
+          .stat-info
+            span.stat-label Doanh thu
+            h3 #{totalRevenue.toLocaleString() || 0}đ
+
+      // MAIN GRID
+      .dashboard-grid
+
+        // LEFT
+        .dashboard-left
+
+          .dashboard-card
+            .dashboard-card__header
+              h3
+                i.fa-solid.fa-chart-column
+                span Thống kê doanh thu
+
+            .dashboard-card__body
+              .chart-placeholder
+                i.fa-solid.fa-chart-line
+                p Biểu đồ doanh thu
+
+          .dashboard-card
+            .dashboard-card__header
+              h3
+                i.fa-solid.fa-receipt
+                span Đơn hàng gần đây
+
+            .dashboard-card__body
+
+              table.dashboard-table
+                thead
+                  tr
+                    th Mã đơn
+                    th Khách hàng
+                    th Trạng thái
+
+                tbody
+                  tr
+                    td #DH001
+                    td Nguyễn Văn A
+                    td
+                      span.badge.success Hoàn thành
+
+                  tr
+                    td #DH002
+                    td Trần Văn B
+                    td
+                      span.badge.warning Đang xử lý
+
+        // RIGHT
+        .dashboard-right
+
+          .dashboard-card
+            .dashboard-card__header
+              h3
+                i.fa-solid.fa-bell
+                span Hoạt động gần đây
+
+            .dashboard-card__body
+
+              ul.activity-list
+                li
+                  i.fa-solid.fa-cart-plus
+                  span Có đơn hàng mới
+
+                li
+                  i.fa-solid.fa-user-plus
+                  span Có người dùng mới
+
+                li
+                  i.fa-solid.fa-box
+                  span Thêm sản phẩm mới
+
+          .dashboard-card
+            .dashboard-card__header
+              h3
+                i.fa-solid.fa-bolt
+                span Truy cập nhanh
+
+            .dashboard-card__body
+
+              .quick-actions
+
+                a.quick-btn(href=`${prefixAdmin}/products`)
+                  i.fa-solid.fa-box-open
+                  span Sản phẩm
+
+                a.quick-btn(href=`${prefixAdmin}/orders`)
+                  i.fa-solid.fa-cart-shopping
+                  span Đơn hàng
+
+                a.quick-btn(href=`${prefixAdmin}/accounts`)
+                  i.fa-solid.fa-users
+                  span Tài khoản
+
+                a.quick-btn(href=`${prefixAdmin}/roles`)
+                  i.fa-solid.fa-user-shield
+                  span Phân quyền
