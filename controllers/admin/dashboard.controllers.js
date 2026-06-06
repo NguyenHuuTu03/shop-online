@@ -41,12 +41,18 @@ module.exports.dashboard = async (req, res) => {
       roleId: role.id,
     });
 
+    const listOrder = await Order.find({
+      status: { $ne: "CANCELED" },
+    })
+      .sort({ createdAt: -1 })
+      .limit(3);
     res.render("admin/pages/dashboard/index", {
       pageTitle: "Tổng quan",
       totalOrder: totalOrder,
       totalRevenue: totalRevenue,
       totalProducts: totalProducts,
       totalUsers: totalUsers,
+      listOrder: listOrder,
     });
   }
 };

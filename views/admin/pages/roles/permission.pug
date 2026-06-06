@@ -45,6 +45,17 @@ block main
               tr.section-row
                 td(colspan=`${roles.length + 1}`) 
                   i.fa-solid.fa-folder-tree
+                  span  Dashboard
+
+              tr(data-name="dashboard_view")
+                td Xem
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
+
+              tr.section-row
+                td(colspan=`${roles.length + 1}`) 
+                  i.fa-solid.fa-folder-tree
                   span  Danh mục sản phẩm
 
               tr(data-name="categories_view")

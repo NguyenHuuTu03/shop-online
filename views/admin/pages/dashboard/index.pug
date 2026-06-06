@@ -85,17 +85,21 @@ block main
                     th Trạng thái
 
                 tbody
-                  tr
-                    td #DH001
-                    td Nguyễn Văn A
-                    td
-                      span.badge.success Hoàn thành
-
-                  tr
-                    td #DH002
-                    td Trần Văn B
-                    td
-                      span.badge.warning Đang xử lý
+                  each order in listOrder
+                    tr
+                      td ##{order.id}
+                      td #{order.fullName}
+                      td
+                        if order.status == "PENDING"
+                          span.status.status--pending(btn-status-order=order.status data-order=order.id) Chờ xác nhận
+                        else if order.status == "CONFIRMED"
+                          span.status.status--confirmed(btn-status-order=order.status data-order=order.id) Đã xác nhận
+                        else if order.status == "SHIPPING"
+                          span.status.status--shipping(btn-status-order=order.status data-order=order.id) Đang giao
+                        else if order.status == "COMPLETED"
+                          span.status.status--delivered(btn-status-order=order.status data-order=order.id) Đã giao
+                        else if order.status == "CANCELED"
+                          span.status.status--canceled(btn-status-order=order.status data-order=order.id) Đã huỷ
 
         // RIGHT
         .dashboard-right
@@ -139,7 +143,7 @@ block main
                   i.fa-solid.fa-cart-shopping
                   span Đơn hàng
 
-                a.quick-btn(href=`${prefixAdmin}/accounts`)
+                a.quick-btn(href=`${prefixAdmin}/users`)
                   i.fa-solid.fa-users
                   span Tài khoản
 
