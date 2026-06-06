@@ -158,8 +158,8 @@ module.exports.momoReturn = async (req, res) => {
 // [POST] /payment/vnpay
 module.exports.paymentVNPay = async (req, res) => {
   const vnpay = new VNPay({
-    tmnCode: "9TWVC9IM",
-    secureSecret: "PT3TGXTHDKYFU1RYW3G8CXS0D3JK8KML",
+    tmnCode: process.env.TMNCODE,
+    secureSecret: process.env.SECURE_SECRET,
     vnpayHost: "https://sandbox.vnpayment.vn",
     testMode: true,
     hashAlgorithm: "SHA512",
