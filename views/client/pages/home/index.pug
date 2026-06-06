@@ -51,7 +51,7 @@ block main
                     span.price-old #{item.price.toLocaleString()} ₫
 
                 .card-footer
-                  button.btn-add-cart
+                  button.btn-add-cart(btn-cart=item.id)
                     i.fa-solid.fa-cart-shopping
                     |  Thêm vào giỏ hàng
 

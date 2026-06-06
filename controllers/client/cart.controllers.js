@@ -12,75 +12,84 @@ module.exports.index = async (req, res) => {
 
 // [POST] /cart/cart-json
 module.exports.cartJson = async (req, res) => {
-  const tokenUser = req.cookies.tokenUser;
-  let cartNew = {};
-  if (tokenUser) {
-    const user = await User.findOne({
-      deleted: false,
-      tokenUser: tokenUser,
-    }).select("-password");
-    const cart = await Cart.findOne({
-      userId: user.id,
-    });
-    if (cart) {
-      let dataCart = [...cart.products];
-      if (req.body.length > 0) {
-        for (const item of req.body) {
-          const index = dataCart.findIndex((product) => product.id == item.id);
-          if (index != -1) {
-            dataCart[index].quantity += item.quantity;
-          } else {
-            dataCart.push(item);
-          }
-        }
-        await Cart.updateOne({ _id: cart.id }, { products: dataCart });
-      }
-    } else {
-      const dataCart = new Cart({
+  try {
+    const tokenUser = req.cookies.tokenUser;
+    let cartNew = {};
+    if (tokenUser) {
+      const user = await User.findOne({
+        deleted: false,
+        tokenUser: tokenUser,
+      }).select("-password");
+      const cart = await Cart.findOne({
         userId: user.id,
-        products: req.body,
       });
-      await dataCart.save();
+      if (cart) {
+        let dataCart = [...cart.products];
+        if (req.body.length > 0) {
+          for (const item of req.body) {
+            const index = dataCart.findIndex(
+              (product) => product.id == item.id,
+            );
+            if (index != -1) {
+              dataCart[index].quantity += item.quantity;
+            } else {
+              dataCart.push(item);
+            }
+          }
+          await Cart.updateOne({ _id: cart.id }, { products: dataCart });
+        }
+      } else {
+        const dataCart = new Cart({
+          userId: user.id,
+          products: req.body,
+        });
+        await dataCart.save();
+      }
+      cartNew = await Cart.findOne({
+        userId: user.id,
+      });
+      for (const item of cartNew.products) {
+        const productInfo = await Products.findOne({
+          _id: item.id,
+          deleted: false,
+        }).lean();
+        caculaterHelpers.caculaterPriceNew(productInfo);
+        item.totalPrice = productInfo.priceNew * item.quantity;
+        item.productInfo = productInfo;
+      }
+      cartNew.totalPrice = cartNew.products.reduce(
+        (sum, item) => sum + item.totalPrice,
+        0,
+      );
+    } else {
+      cartNew = {
+        products: req.body,
+      };
+      for (const item of cartNew.products) {
+        const productInfo = await Products.findOne({
+          _id: item.id,
+          deleted: false,
+        }).lean();
+        caculaterHelpers.caculaterPriceNew(productInfo);
+        item.totalPrice = productInfo.priceNew * item.quantity;
+        item.productInfo = productInfo;
+      }
+      cartNew.totalPrice = cartNew.products.reduce(
+        (sum, item) => sum + item.totalPrice,
+        0,
+      );
     }
-    cartNew = await Cart.findOne({
-      userId: user.id,
+    res.json({
+      code: 200,
+      message: "Thành công!",
+      cart: cartNew,
     });
-    for (const item of cartNew.products) {
-      const productInfo = await Products.findOne({
-        _id: item.id,
-        deleted: false,
-      }).lean();
-      caculaterHelpers.caculaterPriceNew(productInfo);
-      item.totalPrice = productInfo.priceNew * item.quantity;
-      item.productInfo = productInfo;
-    }
-    cartNew.totalPrice = cartNew.products.reduce(
-      (sum, item) => sum + item.totalPrice,
-      0,
-    );
-  } else {
-    cartNew = {
-      products: req.body,
-    };
-    for (const item of cartNew.products) {
-      const productInfo = await Products.findOne({
-        _id: item.id,
-        deleted: false,
-      }).lean();
-      caculaterHelpers.caculaterPriceNew(productInfo);
-      item.totalPrice = productInfo.priceNew * item.quantity;
-      item.productInfo = productInfo;
-    }
-    cartNew.totalPrice = cartNew.products.reduce(
-      (sum, item) => sum + item.totalPrice,
-      0,
-    );
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Thất bại",
+    });
   }
-  res.json({
-    code: 200,
-    message: "Thành công!",
-    cart: cartNew,
-  });
 };
 
 // [PATCH] /cart/update

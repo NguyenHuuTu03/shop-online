@@ -166,6 +166,12 @@ const fetchApi = () => {
   })
     .then((res) => res.json())
     .then((data) => {
+      const elementSidebar = document.querySelector(".cart-page__sidebar");
+
+      if (!data.cart || data.cart.products.length === 0) {
+        elementSidebar.classList.add("d-none");
+      }
+
       const tableBody = document.querySelector(".cart-table__body");
       const htmls = data.cart.products.map((item) => {
         return `

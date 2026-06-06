@@ -14,7 +14,7 @@ module.exports.index = async (req, res) => {
   }
   const categories = await Category.find({
     deleted: false,
-    parentId: null,
+    parentId: "",
   });
   res.render("client/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
