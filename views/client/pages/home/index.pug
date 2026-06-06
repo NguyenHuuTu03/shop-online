@@ -1,0 +1,107 @@
+extends ../../layouts/default.pug
+
+block main
+  .home-page
+
+    // ================= BANNER =================
+    section.hero-slider
+      .container
+
+        .swiper.hero-banner
+
+          .swiper-wrapper
+
+            each img in general.sideBar
+              .swiper-slide
+                img(
+                  src=img
+                  alt="Banner"
+                )
+
+          .swiper-pagination.banner-pagination
+
+    section.home-products.py-5
+      .container
+
+        .section-title.text-center.mb-5
+          h2 Sản phẩm nổi bật
+          p Những sản phẩm bán chạy nhất
+
+        .row
+          each item in products
+            // PRODUCT 1
+            .col-lg-3.col-md-4.col-sm-6.mb-4
+              .card.product-card.h-100
+
+                a.product-img-wrap(href=`/products/detail/${item.slug}`)
+                  img.card-img-top(
+                    src=item.thumbnail
+                    alt=item.title
+                  )
+                  span.badge-featured Nổi bật
+                  if item.discount
+                    span.badge-discount -#{item.discount}%
+
+                .card-body
+                  a.product-title-link(href=`/products/detail/${item.slug}`)
+                    h6.card-title #{item.title}
+
+                  .product-price
+                    span.price-new #{item.priceNew.toLocaleString()} ₫
+                    span.price-old #{item.price.toLocaleString()} ₫
+
+                .card-footer
+                  button.btn-add-cart
+                    i.fa-solid.fa-cart-shopping
+                    |  Thêm vào giỏ hàng
+
+        .text-center.mt-5
+          a.btn.btn-primary.btn-lg(
+            href="/products"
+          )
+            | Xem thêm sản phẩm
+            i.fa-solid.fa-arrow-right.ms-2
+
+    // ================= BANNER KHUYẾN MÃI =================
+    section.home-promo.py-5
+      .container
+
+        .promo-box
+          h2 Sale Shock 50%
+          p Hàng ngàn sản phẩm công nghệ đang giảm giá cực mạnh.
+          a.btn.btn-danger(
+            href="/products"
+          ) Mua ngay
+
+    // ================= DỊCH VỤ =================
+    section.services.py-5
+      .container
+
+        .row
+
+          .col-md-3
+            .service-item
+              i.fa-solid.fa-truck-fast
+              h5 Giao hàng nhanh
+              p Toàn quốc
+
+          .col-md-3
+            .service-item
+              i.fa-solid.fa-shield-halved
+              h5 Chính hãng
+              p Bảo hành đầy đủ
+
+          .col-md-3
+            .service-item
+              i.fa-solid.fa-arrows-rotate
+              h5 Đổi trả
+              p Trong 30 ngày
+
+          .col-md-3
+            .service-item
+              i.fa-solid.fa-headset
+              h5 Hỗ trợ
+              p 24/7
+
+block scripts 
+  script(src="/client/js/home.js") 
