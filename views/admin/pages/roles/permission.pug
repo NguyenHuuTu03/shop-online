@@ -229,6 +229,18 @@ block main
                 each role in roles
                   td.text-center
                     input.permission-checkbox(type="checkbox" )
+                    
+              // ================= Client View =================
+              tr.section-row
+                td(colspan=`${roles.length + 1}`) 
+                  i.fa-solid.fa-display
+                  span  Giao diện người dùng
+
+              tr(data-name="client_view")
+                td Xem
+                each role in roles
+                  td.text-center
+                    input.permission-checkbox(type="checkbox" )
 
               // ================= Setting =================
               tr.section-row
