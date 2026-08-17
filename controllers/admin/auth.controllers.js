@@ -1,6 +1,6 @@
 const User = require("../../models/users.model");
 const Role = require("../../models/roles.model");
-const md5 = require("md5");
+const bcrypt = require("bcrypt");
 const generateHelpers = require("../../helpers/generate");
 const systemConfig = require("../../config/system");
 
@@ -34,7 +34,12 @@ module.exports.loginPost = async (req, res) => {
     }
   }
 
-  if (md5(req.body.password) != exitsEmail.password) {
+  const isPasswordCorrect = await bcrypt.compare(
+    req.body.password,
+    exitsEmail.password,
+  );
+
+  if (!isPasswordCorrect) {
     req.flash("error", "Mật khẩu không đúng!");
     res.redirect(req.get("Referer"));
     return;
@@ -113,7 +118,7 @@ module.exports.editProfilePatch = async (req, res) => {
     tokenUser: token,
   });
   if (req.body.password) {
-    req.body.password = md5(req.body.password);
+    req.body.password = await bcrypt.hash(req.body.password, 10);
   } else {
     req.body.password = user.password;
   }

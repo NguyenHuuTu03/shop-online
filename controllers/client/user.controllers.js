@@ -1,4 +1,4 @@
-const md5 = require("md5");
+const bcrypt = require("bcrypt");
 const User = require("../../models/users.model");
 const Order = require("../../models/order.model");
 const Role = require("../../models/roles.model");
@@ -35,11 +35,18 @@ module.exports.loginPost = async (req, res) => {
     res.redirect(req.get("Referer"));
     return;
   }
-  if (md5(req.body.password) != exitsEmail.password) {
+
+  const isPasswordCorrect = await bcrypt.compare(
+    req.body.password,
+    exitsEmail.password,
+  );
+
+  if (!isPasswordCorrect) {
     req.flash("error", "Mật khẩu không đúng!");
     res.redirect(req.get("Referer"));
     return;
   }
+
   if (exitsEmail.status == "inactive") {
     req.flash("error", "Tài khoản không còn hoạt động!");
     res.redirect(req.get("Referer"));
@@ -76,11 +83,11 @@ module.exports.registerPost = async (req, res) => {
     deleted: false,
     title: "User",
   });
-  req.body.password = md5(req.body.password);
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const user = new User({
     fullName: req.body.fullName,
     email: req.body.email,
-    password: req.body.password,
+    password: hashedPassword,
     status: "active",
     tokenUser: generateHelpers.generateRandomString(30),
     roleId: role.id,
@@ -200,12 +207,18 @@ module.exports.resetPasswordPost = async (req, res) => {
     deleted: false,
     email: email,
   });
-  if (user.password == md5(password)) {
+
+  const isSamePassword = await bcrypt.compare(password, user.password);
+
+  if (isSamePassword) {
     req.flash("error", "Mật khẩu mới không được trùng với mật khẩu cũ!");
     res.redirect(req.get("Referer"));
     return;
   }
-  await User.updateOne({ email: email }, { password: md5(password) });
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await User.updateOne({ email: email }, { password: hashedPassword });
   delete req.session.email;
   res.redirect("/users/login");
 };
